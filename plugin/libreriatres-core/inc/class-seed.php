@@ -26,6 +26,18 @@ class Libreria_Tres_Core_Seed {
 		self::create_products();
 		self::create_menus();
 		self::configure_front( $ids );
+		self::set_site_icon();
+	}
+
+	/**
+	 * Usa el logo oficial como icono del sitio (favicon).
+	 */
+	private static function set_site_icon() {
+		$attachment_id = Libreria_Tres_Core_Media::sideload( 'logo.png', 'Librería Tres', '' );
+
+		if ( $attachment_id ) {
+			update_option( 'site_icon', $attachment_id );
+		}
 	}
 
 	/**

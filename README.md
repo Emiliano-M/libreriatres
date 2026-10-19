@@ -42,8 +42,23 @@ impresiones). El sitio vive en Hostinger y se despliega con scripts propios cont
 │   ├── check-cart-msg.mjs     # verifica el mensaje que se manda a WhatsApp
 │   └── rm-remote.mjs          # borra archivos remotos
 ├── assets/products/           # originales de las fotos de producto
+├── assets/logo-libreria-tres.png  # logo oficial (se copia al tema y al plugin)
 └── tools/                     # utilidades de diagnóstico (no se despliegan)
 ```
+
+### El logo
+El logo oficial vive en `assets/logo-libreria-tres.png` (519×519, fondo transparente
+fuera del círculo). Se usa en tres lugares:
+
+- **Header y footer**: `theme/libreriatres/assets/img/logo.png`, junto al nombre en
+  Playfair (el logo ya lleva el texto, así que el wordmark va como marca).
+- **Favicon / icono del sitio**: el plugin lo registra en la biblioteca de medios y lo
+  asigna a la opción `site_icon` de WordPress.
+
+Para cambiarlo: reemplazá el PNG en `assets/` y corré
+`node scripts/make-assets.mjs` no hace falta; alcanza con copiar el archivo a
+`theme/libreriatres/assets/img/logo.png` y `plugin/libreriatres-core/assets/logo.png`,
+desplegar y reejecutar el seed.
 
 ## 2. Requisitos
 

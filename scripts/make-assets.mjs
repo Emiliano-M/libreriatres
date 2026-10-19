@@ -362,7 +362,8 @@ const products = {
 console.log('Generando recursos del tema...');
 writeSvg('hero.svg', heroSvg());
 for (let i = 1; i <= 4; i++) writeSvg(`insta-${i}.svg`, instaSvg(i));
-writeSvg('favicon.svg', faviconSvg());
+// El favicon real es el logo oficial (assets/logo-libreria-tres.png), que el
+// plugin instala como icono del sitio.
 
 console.log('Generando fotos de producto...');
 for (const [name, fn] of Object.entries(products)) {

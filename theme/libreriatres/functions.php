@@ -237,11 +237,10 @@ function libreriatres_icon( $name, $size = 22 ) {
  * ---------------------------------------------------------------------- */
 
 function libreriatres_logo( $class = 'logo' ) {
-	$svg = libreriatres_butterfly_svg();
 	$title = get_bloginfo( 'name' );
 
 	$html = '<a class="' . esc_attr( $class ) . '" href="' . esc_url( home_url( '/' ) ) . '" rel="home">'
-		. $svg
+		. '<img class="logo__mark" src="' . esc_url( LIBRERIA_TRES_URI . '/assets/img/logo.png' ) . '" width="519" height="519" alt="" decoding="async">'
 		. '<span class="logo__text">'
 		. '<span class="logo__name">' . esc_html( $title ) . '</span>'
 		. '<span class="logo__tagline">' . esc_html__( 'LIBRERÍA · PAPELERÍA · IMPRESIONES', 'libreriatres' ) . '</span>'

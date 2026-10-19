@@ -17,12 +17,15 @@ class Libreria_Tres_Core_Media {
 	/**
 	 * Registra una imagen del plugin en la biblioteca de medios.
 	 *
-	 * @param string $filename Nombre del archivo dentro de assets/products.
+	 * @param string $filename Nombre del archivo dentro de assets.
 	 * @param string $title    Titulo del adjunto.
+	 * @param string $folder   Carpeta dentro de assets (products, etc).
 	 * @return int ID del adjunto o 0.
 	 */
-	public static function sideload( $filename, $title ) {
-		$source = LIBRERIA_TRES_CORE_DIR . 'assets/products/' . $filename;
+	public static function sideload( $filename, $title, $folder = 'products' ) {
+		$path   = 'assets/' . trim( $folder, '/' );
+		$path   = 'assets/' === $path ? $path : $path . '/';
+		$source = LIBRERIA_TRES_CORE_DIR . $path . $filename;
 
 		if ( ! file_exists( $source ) ) {
 			return 0;

@@ -256,8 +256,12 @@ textarea {
 	flex-shrink: 0;
 }
 
-.logo .butterfly {
-	color: var(--berry);
+.logo__mark {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	object-fit: contain;
+	flex-shrink: 0;
 }
 
 .logo__text {
@@ -1110,6 +1114,16 @@ textarea {
 
 .logo--footer {
 	margin-bottom: 14px;
+	align-items: center;
+}
+
+.logo--footer .logo__mark {
+	width: 78px;
+	height: 78px;
+}
+
+.logo--footer .logo__name {
+	font-size: 30px;
 }
 
 .site-footer__about {
@@ -2132,9 +2146,9 @@ textarea {
 		min-width: 0;
 	}
 
-	.logo .butterfly {
-		width: 32px;
-		height: 32px;
+	.logo__mark {
+		width: 40px;
+		height: 40px;
 	}
 
 	.logo__name {
