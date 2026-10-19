@@ -1,0 +1,20 @@
+{
+  "name": "libreriatres",
+  "version": "1.0.0",
+  "description": "Tienda WooCommerce de Librería Tres: tema a medida, plugin de arranque y deploy por la API de Hostinger.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "node scripts/php-lint.mjs",
+    "deploy": "node scripts/php-lint.mjs && node scripts/deploy.mjs",
+    "deploy:reset": "node scripts/php-lint.mjs && node scripts/deploy.mjs --deactivate",
+    "assets": "node scripts/make-assets.mjs",
+    "fonts": "node scripts/fetch-fonts.mjs",
+    "check:cart": "node scripts/check-cart-msg.mjs",
+    "check:admin": "node scripts/check-admin.mjs"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

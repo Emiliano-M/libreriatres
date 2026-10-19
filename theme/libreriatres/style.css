@@ -1,0 +1,21 @@
+/*
+Theme Name: Libreria Tres
+Theme URI: https://forestgreen-coyote-929041.hostingersite.com
+Author: Libreria Tres
+Description: Tema a medida para Libreria Tres - Librería, papelería e impresiones. WooCommerce con pedidos por WhatsApp.
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 7.1
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: libreriatres
+Tags: e-commerce, two-columns, custom-menu, custom-logo, featured-images, translation-ready
+WC requires at least: 8.0
+WC tested up to: 10.0
+*/
+
+/*
+ * Los estilos del sitio viven en assets/css/main.css
+ * (main.css + fonts.css se encolan desde functions.php).
+ */

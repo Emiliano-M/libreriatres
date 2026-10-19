@@ -1,0 +1,14 @@
+# Normalizar fin de linea: el repo se despliega a un server Linux.
+* text=auto eol=lf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff2 binary
+*.woff binary
+*.ttf binary
+*.zip binary
