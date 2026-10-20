@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Libreria Tres Core
- * Plugin URI: https://forestgreen-coyote-929041.hostingersite.com
+ * Plugin URI: https://libreriatres.com
  * Description: Arranque y configuracion de la tienda Libreria Tres: limpia el contenido de demo, crea paginas, menu, categorias, productos y ajusta WooCommerce.
  * Version: 1.0.0
  * Requires at least: 6.4

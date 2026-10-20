@@ -3,7 +3,10 @@
  * encuentre los datos correctos (misma logica que assets/js/main.js).
  * Uso: node scripts/check-cart-msg.mjs
  */
-const BASE = 'https://forestgreen-coyorte-929041.hostingersite.com'.replace('coyorte', 'coyote');
+import { loadConfig } from './hostinger.mjs';
+
+const cfg = loadConfig();
+const BASE = `https://${cfg.domain}`;
 
 const jar = [];
 const cookie = (res) => {

@@ -4,7 +4,7 @@ Tienda WooCommerce con diseño a medida para **Librería Tres** (librería, pape
 impresiones). El sitio vive en Hostinger y se despliega con scripts propios contra la
 **API de Hostinger**, sin tocar el panel hPanel.
 
-- **Producción:** https://forestgreen-coyote-929041.hostingersite.com
+- **Producción:** https://libreriatres.com
 - **Tema:** `theme/libreriatres` — HTML/CSS/JS propio, sin Elementor.
 - **Plugin:** `plugin/libreriatres-core` — deja la tienda lista (páginas, menú, categorías,
   productos, ajustes de WooCommerce y datos del negocio).
@@ -179,3 +179,15 @@ No se despliegan. Si hace falta subirlos a mano al hosting:
 - Base de la API: `https://developers.hostinger.com/api` (el `api.hostinger.com` viejo ya no).
 - Límite: 90 requests/minuto por token.
 - Los `.env` y tokens nunca se suben al hosting: el deploy solo sube `theme/` y `plugin/`.
+
+## 8. Mobile
+
+- El header en mobile es una grilla de 3 columnas: **menú a la izquierda, logo al
+  centro, WhatsApp + carrito a la derecha** (queda simétrico).
+- El tagline `LIBRERÍA · PAPELERÍA · IMPRESIONES` se oculta en mobile.
+- `html` y `body` llevan `overflow-x: clip`: la página **no** tiene scroll horizontal.
+  Los "destacados" de la home sí scrollean en horizontal, pero es un carrusel
+  propio (`.products-grid--scroll`), no la página.
+- Para revisar desbordes: cargar la página con `?debug-overflow` y se muestra un
+  informe con los elementos que se salen del viewport y los anchos de
+  `html`/`body` (`theme/libreriatres/assets/js/debug-overflow.js`).

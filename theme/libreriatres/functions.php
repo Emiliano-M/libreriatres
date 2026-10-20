@@ -1,7 +1,7 @@
 <?php
 /*
 Theme Name: Libreria Tres
-Theme URI: https://forestgreen-coyote-929041.hostingersite.com
+Theme URI: https://libreriatres.com
 Author: Libreria Tres
 Description: Tema a medida para Libreria Tres - Libreria, papeleria e impresiones. WooCommerce con pedidos por WhatsApp.
 Version: 1.0.0
@@ -87,6 +87,17 @@ function libreriatres_assets() {
 	wp_enqueue_style( 'libreriatres-main', LIBRERIA_TRES_URI . '/assets/css/main.css', array( 'libreriatres-style' ), $stamp( '/assets/css/main.css' ) );
 
 	wp_enqueue_script( 'libreriatres-main', LIBRERIA_TRES_URI . '/assets/js/main.js', array(), $stamp( '/assets/js/main.js' ), true );
+
+	// Diagnostico de scroll horizontal: ?debug-overflow
+	if ( isset( $_GET['debug-overflow'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		wp_enqueue_script(
+			'libreriatres-debug-overflow',
+			LIBRERIA_TRES_URI . '/assets/js/debug-overflow.js',
+			array(),
+			$stamp( '/assets/js/debug-overflow.js' ),
+			true
+		);
+	}
 	wp_localize_script(
 		'libreriatres-main',
 		'libreriatresData',
@@ -243,7 +254,7 @@ function libreriatres_logo( $class = 'logo' ) {
 		. '<img class="logo__mark" src="' . esc_url( LIBRERIA_TRES_URI . '/assets/img/logo.png' ) . '" width="519" height="519" alt="" decoding="async">'
 		. '<span class="logo__text">'
 		. '<span class="logo__name">' . esc_html( $title ) . '</span>'
-		. '<span class="logo__tagline">' . esc_html__( 'LIBRERÍA · PAPELERÍA · IMPRESIONES', 'libreriatres' ) . '</span>'
+		. '<span class="logo__tagline">' . esc_html__( 'LIBRERÍA · PAPELERA · IMPRESIONES', 'libreriatres' ) . '</span>'
 		. '</span></a>';
 
 	return $html;

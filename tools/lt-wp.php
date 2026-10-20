@@ -12,11 +12,11 @@ if ( ! isset( $_GET['token'] ) || $_GET['token'] !== $token ) {
 }
 
 define( 'WP_USE_THEMES', false );
-$_SERVER['HTTP_HOST']    = 'forestgreen-coyote-929041.hostingersite.com';
+$_SERVER['HTTP_HOST']    = 'libreriatres.com';
 $_SERVER['REQUEST_URI']  = '/';
 $_SERVER['REQUEST_METHOD'] = 'GET';
 
-require_once '/home/u352889191/domains/forestgreen-coyote-929041.hostingersite.com/public_html/wp-load.php';
+require_once '/home/u352889191/domains/libreriatres.com/public_html/wp-load.php';
 
 $cmd = isset( $_GET['cmd'] ) ? $_GET['cmd'] : 'status';
 
@@ -80,7 +80,7 @@ if ( 'eval' === $cmd ) {
 
 if ( 'cleanup' === $cmd ) {
 	// Borra los archivos temporales de depuracion.
-	$root = '/home/u352889191/domains/forestgreen-coyote-929041.hostingersite.com/public_html';
+	$root = '/home/u352889191/domains/libreriatres.com/public_html';
 	$files = glob( $root . '/lt-*.php' );
 	$files = array_merge( $files, glob( $root . '/wp-content/mu-plugins/lt-*.php' ) );
 

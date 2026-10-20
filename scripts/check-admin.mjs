@@ -46,7 +46,17 @@ for (const c of checks) {
 	console.log((html.includes(c) ? 'OK   ' : '--   ') + c);
 }
 
-if (/Fatal error|Warning:|Notice:|Deprecated:/i.test(html)) {
+// Busca errores reales de PHP (no los strings de traduccion del admin).
+const phpErrors = [
+	/<strong>(Warning|Notice|Deprecated|Parse error|Fatal error)<\/strong>:/i,
+	/Fatal error:/i,
+	/Parse error:/i,
+	/Uncaught \w+Error/i,
+];
+
+const found = phpErrors.filter((re) => re.test(html));
+
+if (found.length) {
 	console.error('FALLO: hay avisos de PHP en el admin.');
 	process.exit(1);
 }

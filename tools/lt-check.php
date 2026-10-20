@@ -10,7 +10,7 @@
  */
 
 $token = 'lt-9f2c1d';
-$base  = '/home/u352889191/domains/forestgreen-coyote-929041.hostingersite.com/public_html';
+$base  = '/home/u352889191/domains/libreriatres.com/public_html';
 
 if ( ! isset( $_GET['token'] ) || $_GET['token'] !== $token ) {
 	http_response_code( 403 );
