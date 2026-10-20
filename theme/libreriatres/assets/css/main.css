@@ -1587,6 +1587,11 @@ textarea {
 	color: var(--ink-soft);
 }
 
+/* En la ficha de producto no mostramos el SKU. */
+.single-product .product_meta .sku_wrapper {
+	display: none;
+}
+
 .single-product form.cart {
 	display: flex;
 	align-items: center;
