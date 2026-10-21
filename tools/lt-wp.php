@@ -114,4 +114,16 @@ if ( 'cleanup' === $cmd ) {
 	exit;
 }
 
+if ( 'instagram' === $cmd ) {
+	if ( isset( $_GET['ig_token'] ) ) {
+		update_option( 'libreriatres_instagram_token', sanitize_text_field( $_GET['ig_token'] ) );
+	}
+	$feed = Libreria_Tres_Core_Instagram::refresh();
+	echo is_wp_error( $feed ) ? 'ERROR: ' . $feed->get_error_message() : 'OK ' . count( $feed ) . ' publicaciones';
+	echo "\nfeed cache: " . count( Libreria_Tres_Core_Instagram::get_feed() );
+	echo "\nultimo error: " . Libreria_Tres_Core_Instagram::last_error();
+	echo "\ntoken: " . ( Libreria_Tres_Core_Instagram::get_token() ? 'guardado' : 'vacio' );
+	exit;
+}
+
 echo "comando desconocido\n";

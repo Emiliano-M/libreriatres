@@ -21,6 +21,7 @@ class Libreria_Tres_Core_Admin {
 		add_action( 'admin_menu', array( __CLASS__, 'menu' ) );
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 		add_action( 'admin_post_libreriatres_reseed', array( __CLASS__, 'handle_reseed' ) );
+		add_action( 'admin_post_libreriatres_instagram_test', array( __CLASS__, 'handle_instagram_test' ) );
 		add_shortcode( 'libreriatres_contacto', array( __CLASS__, 'contacto_shortcode' ) );
 	}
 
@@ -73,6 +74,27 @@ class Libreria_Tres_Core_Admin {
 				'default'           => 'no',
 			)
 		);
+
+		// Token de la Graph API de Instagram.
+		register_setting(
+			'libreriatres_core',
+			'libreriatres_instagram_token',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'default'           => '',
+			)
+		);
+
+		register_setting(
+			'libreriatres_core',
+			'libreriatres_instagram_version',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'default'           => 'v22.0',
+			)
+		);
 	}
 
 	/**
@@ -103,6 +125,18 @@ class Libreria_Tres_Core_Admin {
 
 			<?php if ( $error ) : ?>
 				<div class="notice notice-error"><p><?php echo esc_html( $error ); ?></p></div>
+			<?php endif; ?>
+
+			<?php if ( isset( $_GET['ig_ok'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php echo esc_html( sprintf( 'Instagram: se actualizaron %d publicaciones.', (int) $_GET['ig_ok'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?></p>
+				</div>
+			<?php endif; ?>
+
+			<?php if ( isset( $_GET['ig_error'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
+				<div class="notice notice-error is-dismissible">
+					<p><?php echo esc_html( 'Instagram: no se pudo actualizar el feed.', 'libreriatres-core' ); ?></p>
+				</div>
 			<?php endif; ?>
 
 			<?php if ( $log ) : ?>
@@ -143,6 +177,36 @@ class Libreria_Tres_Core_Admin {
 									<input type="checkbox" name="libreriatres_pagos_online" id="libreriatres_pagos_online" value="yes" <?php checked( 'yes', get_option( 'libreriatres_pagos_online' ) ); ?>>
 									<?php esc_html_e( 'Habilitar checkout con pasarela de pago (MercadoPago). Si está apagado, el pedido se cierra por WhatsApp.', 'libreriatres-core' ); ?>
 								</label>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row"><label for="libreriatres_instagram_token"><?php esc_html_e( 'Token de Instagram', 'libreriatres-core' ); ?></label></th>
+							<td>
+								<input name="libreriatres_instagram_token" id="libreriatres_instagram_token" type="text" class="regular-text" autocomplete="off" value="<?php echo esc_attr( get_option( 'libreriatres_instagram_token' ) ); ?>">
+								<p class="description">
+									<?php esc_html_e( 'Access token de la Graph API de Instagram (scope instagram_basic). Con esto la home muestra las últimas 4 publicaciones reales. Sin token se muestran los placeholders.', 'libreriatres-core' ); ?>
+									<?php
+									$libreriatres_error = Libreria_Tres_Core_Instagram::last_error();
+									if ( $libreriatres_error && Libreria_Tres_Core_Instagram::get_token() ) {
+										echo '<br><span style="color:#b32d2e">' . esc_html( $libreriatres_error ) . '</span>';
+									}
+									?>
+								</p>
+								<p>
+									<?php
+									$libreriatres_feed = Libreria_Tres_Core_Instagram::get_feed();
+									printf(
+										/* translators: %d: cantidad de publicaciones. */
+										esc_html__( 'Publicaciones en el caché: %d', 'libreriatres-core' ),
+										count( $libreriatres_feed )
+									);
+									?>
+								</p>
+								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+									<input type="hidden" name="action" value="libreriatres_instagram_test">
+									<?php wp_nonce_field( 'libreriatres_instagram_test' ); ?>
+									<?php submit_button( __( 'Probar conexión y refrescar feed', 'libreriatres-core' ), 'secondary', 'submit', false ); ?>
+								</form>
 							</td>
 						</tr>
 					</table>
@@ -187,6 +251,36 @@ class Libreria_Tres_Core_Admin {
 		Libreria_Tres_Core::bootstrap( true );
 
 		wp_safe_redirect( admin_url( 'admin.php?page=libreriatres&reseed=1' ) );
+		exit;
+	}
+
+	/**
+	 * Prueba el token de Instagram y refresca el feed.
+	 */
+	public static function handle_instagram_test() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'No tenés permisos.', 'libreriatres-core' ) );
+		}
+		check_admin_referer( 'libreriatres_instagram_test' );
+
+		$result = Libreria_Tres_Core_Instagram::test();
+
+		if ( is_wp_error( $result ) ) {
+			update_option( 'libreriatres_instagram_error', $result->get_error_message() );
+			wp_safe_redirect( admin_url( 'admin.php?page=libreriatres&ig_error=1' ) );
+			exit;
+		}
+
+		delete_option( 'libreriatres_instagram_error' );
+
+		$feed = Libreria_Tres_Core_Instagram::refresh();
+
+		if ( is_wp_error( $feed ) ) {
+			wp_safe_redirect( admin_url( 'admin.php?page=libreriatres&ig_error=1' ) );
+			exit;
+		}
+
+		wp_safe_redirect( admin_url( 'admin.php?page=libreriatres&ig_ok=' . count( $feed ) ) );
 		exit;
 	}
 

@@ -26,6 +26,7 @@ require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-cleanup.php';
 require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-media.php';
 require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-seed.php';
 require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-commerce.php';
+require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-instagram.php';
 require_once LIBRERIA_TRES_CORE_DIR . 'inc/class-admin.php';
 
 /**
@@ -39,6 +40,7 @@ final class Libreria_Tres_Core {
 	public static function init() {
 		Libreria_Tres_Core_Admin::init();
 		Libreria_Tres_Core_Commerce::init();
+		Libreria_Tres_Core_Instagram::init();
 	}
 
 	/**

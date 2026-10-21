@@ -56,7 +56,6 @@ $libreriatres_shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_pag
 		<header class="section__head">
 			<h2 class="section__title">
 				<?php esc_html_e( 'Productos destacados', 'libreriatres' ); ?>
-				<span class="section__heart" aria-hidden="true">&#9825;</span>
 			</h2>
 			<a class="section__more" href="<?php echo esc_url( $libreriatres_shop_url ); ?>">
 				<?php esc_html_e( 'Ver todos', 'libreriatres' ); ?>

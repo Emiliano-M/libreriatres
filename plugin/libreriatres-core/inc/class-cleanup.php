@@ -26,7 +26,17 @@ class Libreria_Tres_Core_Cleanup {
 		self::delete_demo_options();
 		self::remove_probe_files();
 		self::remove_stale_theme_dirs();
+		self::reset_instagram_cache();
 		self::reset_permalinks();
+	}
+
+	/**
+	 * El seed borra los adjuntos, asi que el feed de Instagram y el mapa de
+	 * imagenes quedan sin sentido: se limpian para que se vuelvan a bajar.
+	 */
+	private static function reset_instagram_cache() {
+		delete_transient( 'libreriatres_instagram_feed' );
+		delete_option( 'libreriatres_instagram_media' );
 	}
 
 	/**

@@ -703,10 +703,6 @@ textarea {
 	margin: 0;
 }
 
-.section__heart {
-	color: var(--berry);
-}
-
 .section__more {
 	display: inline-flex;
 	align-items: center;

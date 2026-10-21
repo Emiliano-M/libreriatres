@@ -109,8 +109,35 @@ O editando `config.json` + `plugin/libreriatres-core/inc/class-options.php`.
 En **Ajustes → Generales** de WordPress y en el DNS del dominio apuntando al hosting.
 El tema no tiene el dominio hardcodeado (salvo el `site_url` de `config.json`).
 
-### MercadoPago / pagos online
-Hoy la tienda **no tiene checkout online**: el pedido se arma en el carrito y se
+### Las fotos de Instagram en la home
+La sección "¡Seguinos en Instagram!" de la home puede mostrar las **últimas 4
+publicaciones reales**, cada una enlazando a su post en Instagram.
+
+Hace falta un **access token de la Graph API de Instagram** (scope
+`instagram_basic`). Sin token, la sección sigue mostrando los 4 placeholders y el
+sitio funciona igual.
+
+Cómo obtenerlo:
+
+1. Crear una app en <https://developers.facebook.com> y agregarle el producto
+   **Instagram** (API con Instagram Login, o cuenta de Instagram Business/Creator
+   vinculada a una Página de Facebook).
+2. Vincular la cuenta de Instagram y generar un **token de larga duración** con el
+   scope `instagram_basic`.
+3. Pegarlo en **WP Admin → Librería Tres → Token de Instagram** y tocar
+   **"Probar conexión y refrescar feed"**.
+
+Detalles de la implementación:
+
+- `plugin/libreriatres-core/inc/class-instagram.php` pide
+  `graph.instagram.com/me/media` (4 imágenes) y cachea el resultado en un
+  transient de 6 horas, refrescado por cron cada hora.
+- **Las imágenes se copian al hosting** (no hay hotlink a Instagram) y se reusan
+  entre refrescos, así que la biblioteca de medios no se llena de duplicados.
+- Si el token expira o la API falla, se guarda el error (se ve en el admin) y la
+  home sigue mostrando lo último cacheado o los placeholders.
+
+### MercadoPago / pagos onlineHoy la tienda **no tiene checkout online**: el pedido se arma en el carrito y se
 cierra por WhatsApp. Eso lo define `plugin/libreriatres-core/inc/class-commerce.php`:
 
 - `woocommerce_available_payment_gateways` devuelve una lista vacía (no hay pasarela).
