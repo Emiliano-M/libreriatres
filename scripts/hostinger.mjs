@@ -104,7 +104,7 @@ export const host = {
   getFileContent: (username, domain, path) =>
     api(`/hosting/v1/accounts/${username}/domains/${domain}/files/content?path=${encodeURIComponent(path)}`),
   clearCache: (username, domain) =>
-    api(`/hosting/v1/accounts/${username}/websites/${domain}/cache/clear`, { method: 'POST' }),
+    api(`/hosting/v1/accounts/${username}/websites/${domain}/cache/clear`, { method: 'DELETE' }),
   purgeLiteSpeed: (username, software) =>
     api(`/hosting/v1/accounts/${username}/wordpress/${software}/litespeed-cache/purge`, { method: 'POST' }),
   updateWpCore: (username, software) =>

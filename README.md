@@ -113,29 +113,36 @@ El tema no tiene el dominio hardcodeado (salvo el `site_url` de `config.json`).
 La sección "¡Seguinos en Instagram!" de la home puede mostrar las **últimas 4
 publicaciones reales**, cada una enlazando a su post en Instagram.
 
-Hace falta un **access token de la Graph API de Instagram** (scope
-`instagram_basic`). Sin token, la sección sigue mostrando los 4 placeholders y el
-sitio funciona igual.
+Hay dos fuentes posibles (se usa la primera que esté configurada):
 
-Cómo obtenerlo:
+**1. Feed RSS (lo más simple).** Creás una cuenta gratis en
+[rss.app](https://rss.app), agregás la fuente de Instagram de `@libreria.tres`,
+copiás la URL del feed y la pegás en **WP Admin → Librería Tres → Feed RSS de
+Instagram** → "Probar conexión y refrescar feed".
 
-1. Crear una app en <https://developers.facebook.com> y agregarle el producto
-   **Instagram** (API con Instagram Login, o cuenta de Instagram Business/Creator
-   vinculada a una Página de Facebook).
-2. Vincular la cuenta de Instagram y generar un **token de larga duración** con el
-   scope `instagram_basic`.
-3. Pegarlo en **WP Admin → Librería Tres → Token de Instagram** y tocar
-   **"Probar conexión y refrescar feed"**.
+**2. Graph API de Instagram.** Un access token con scope `instagram_basic`
+(app de Meta, scope largo). Se usa solo si no hay un feed RSS configurado.
+
+Sin ninguna de las dos, la sección sigue mostrando los 4 placeholders: el sitio
+nunca se rompe.
 
 Detalles de la implementación:
 
-- `plugin/libreriatres-core/inc/class-instagram.php` pide
-  `graph.instagram.com/me/media` (4 imágenes) y cachea el resultado en un
-  transient de 6 horas, refrescado por cron cada hora.
+- `plugin/libreriatres-core/inc/class-instagram.php` parsea el feed (RSS 2.0 o
+  Atom) y extrae de cada item el link del post, la imagen (`media:content`,
+  `media:thumbnail`, `enclosure` o el `<img>` del `content:encoded`) y el caption.
 - **Las imágenes se copian al hosting** (no hay hotlink a Instagram) y se reusan
   entre refrescos, así que la biblioteca de medios no se llena de duplicados.
-- Si el token expira o la API falla, se guarda el error (se ve en el admin) y la
-  home sigue mostrando lo último cacheado o los placeholders.
+- El feed se cachea 6 h y se refresca por cron cada hora. **Después de refrescar
+  se purga la caché de LiteSpeed**, si no la home (que está cacheada) seguiría
+  mostrando las publicaciones viejas.
+- Si la fuente falla, se guarda el error (visible en el admin) y la home sigue
+  con lo último cacheado o con los placeholders.
+
+> **Por qué hace falta una de las dos**: Instagram cerró el oEmbed oficial
+> (devuelve el muro de login) y el perfil ya no expone los posts en el HTML, ni
+> siquiera para crawlers. Lo único que sigue abierto es el `og:image` de un post
+> individual, pero eso no alcanza para saber *cuáles* son los últimos.
 
 ### MercadoPago / pagos onlineHoy la tienda **no tiene checkout online**: el pedido se arma en el carrito y se
 cierra por WhatsApp. Eso lo define `plugin/libreriatres-core/inc/class-commerce.php`:

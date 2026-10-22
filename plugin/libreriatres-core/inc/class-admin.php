@@ -88,6 +88,16 @@ class Libreria_Tres_Core_Admin {
 
 		register_setting(
 			'libreriatres_core',
+			'libreriatres_instagram_rss',
+			array(
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_url_raw',
+				'default'           => '',
+			)
+		);
+
+		register_setting(
+			'libreriatres_core',
 			'libreriatres_instagram_version',
 			array(
 				'type'              => 'string',
@@ -180,14 +190,23 @@ class Libreria_Tres_Core_Admin {
 							</td>
 						</tr>
 						<tr>
+							<th scope="row"><label for="libreriatres_instagram_rss"><?php esc_html_e( 'Feed RSS de Instagram', 'libreriatres-core' ); ?></label></th>
+							<td>
+								<input name="libreriatres_instagram_rss" id="libreriatres_instagram_rss" type="url" class="regular-text" placeholder="https://rsshub.app/..." value="<?php echo esc_attr( get_option( 'libreriatres_instagram_rss' ) ); ?>">
+								<p class="description">
+									<?php esc_html_e( 'URL del feed con las publicaciones de Instagram. Una forma simple de obtenerla es crear una cuenta gratis en RSS.app, agregar la fuente de Instagram y copiar la URL del feed. Con esto la home muestra siempre las últimas publicaciones.', 'libreriatres-core' ); ?>
+								</p>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row"><label for="libreriatres_instagram_token"><?php esc_html_e( 'Token de Instagram', 'libreriatres-core' ); ?></label></th>
 							<td>
 								<input name="libreriatres_instagram_token" id="libreriatres_instagram_token" type="text" class="regular-text" autocomplete="off" value="<?php echo esc_attr( get_option( 'libreriatres_instagram_token' ) ); ?>">
 								<p class="description">
-									<?php esc_html_e( 'Access token de la Graph API de Instagram (scope instagram_basic). Con esto la home muestra las últimas 4 publicaciones reales. Sin token se muestran los placeholders.', 'libreriatres-core' ); ?>
+									<?php esc_html_e( 'Alternativa: access token de la Graph API de Instagram (scope instagram_basic). Se usa solo si no hay un feed RSS configurado.', 'libreriatres-core' ); ?>
 									<?php
 									$libreriatres_error = Libreria_Tres_Core_Instagram::last_error();
-									if ( $libreriatres_error && Libreria_Tres_Core_Instagram::get_token() ) {
+									if ( $libreriatres_error && ( Libreria_Tres_Core_Instagram::get_token() || Libreria_Tres_Core_Instagram::get_rss_url() ) ) {
 										echo '<br><span style="color:#b32d2e">' . esc_html( $libreriatres_error ) . '</span>';
 									}
 									?>

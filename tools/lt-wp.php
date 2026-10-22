@@ -94,6 +94,14 @@ if ( 'cleanup' === $cmd ) {
 		echo ( unlink( $log ) ? 'borrado ' : 'error ' ) . 'lt-error.log' . "\n";
 	}
 
+	// Archivos de prueba.
+	foreach ( array( 'test-feed.xml' ) as $extra ) {
+		$file = $root . '/' . $extra;
+		if ( file_exists( $file ) ) {
+			echo ( unlink( $file ) ? 'borrado ' : 'error ' ) . $extra . "\n";
+		}
+	}
+
 	// Carpetas del tema que quedaron con sufijo -old-<hash>.
 	$stale = glob( $root . '/wp-content/themes/libreriatres-old-*' );
 	foreach ( $stale as $dir ) {
@@ -118,11 +126,17 @@ if ( 'instagram' === $cmd ) {
 	if ( isset( $_GET['ig_token'] ) ) {
 		update_option( 'libreriatres_instagram_token', sanitize_text_field( $_GET['ig_token'] ) );
 	}
+	if ( isset( $_GET['ig_rss'] ) ) {
+		update_option( 'libreriatres_instagram_rss', esc_url_raw( $_GET['ig_rss'] ) );
+	}
 	$feed = Libreria_Tres_Core_Instagram::refresh();
 	echo is_wp_error( $feed ) ? 'ERROR: ' . $feed->get_error_message() : 'OK ' . count( $feed ) . ' publicaciones';
 	echo "\nfeed cache: " . count( Libreria_Tres_Core_Instagram::get_feed() );
 	echo "\nultimo error: " . Libreria_Tres_Core_Instagram::last_error();
-	echo "\ntoken: " . ( Libreria_Tres_Core_Instagram::get_token() ? 'guardado' : 'vacio' );
+	echo "\nrss: " . ( Libreria_Tres_Core_Instagram::get_rss_url() ? Libreria_Tres_Core_Instagram::get_rss_url() : 'vacio' );
+	foreach ( Libreria_Tres_Core_Instagram::get_feed() as $p ) {
+		echo "\n  - " . $p['permalink'] . " | " . $p['image'] . " | " . $p['caption'];
+	}
 	exit;
 }
 
