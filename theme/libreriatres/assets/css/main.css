@@ -589,7 +589,8 @@ textarea {
 /* ------------------------------------------------------------- Hero */
 
 .hero {
-	background: linear-gradient(180deg, var(--pink-50) 0%, #fff 100%);
+	background: linear-gradient(180deg, rgba(253, 244, 246, 0.22) 0%, rgba(255, 255, 255, 0.12) 100%),
+		url("../assets/img/nodoce-fondo.png") center/cover no-repeat;
 	overflow: hidden;
 }
 
