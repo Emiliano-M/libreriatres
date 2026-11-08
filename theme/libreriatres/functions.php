@@ -223,10 +223,10 @@ function libreriatres_icon( $name, $size = 22 ) {
 		'truck'     => '<path d="M3 5h11v9H3V5Zm12 3h3.5L21 11v3h-6V8ZM6.5 17a1.8 1.8 0 1 0 0 3.6A1.8 1.8 0 0 0 6.5 17Zm11 0a1.8 1.8 0 1 0 0 3.6 1.8 1.8 0 0 0 0-3.6Z"/>',
 		'shield'    => '<path d="M12 2 4 5.5V11c0 5 3.4 9.6 8 11 4.6-1.4 8-6 8-11V5.5L12 2Zm-1 13.6-3.3-3.3 1.4-1.4 1.9 1.9 4.3-4.3 1.4 1.4-5.7 5.7Z"/>',
 		'trash'     => '<path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-3 6h12l-1 11.2A2 2 0 0 1 15 22H9a2 2 0 0 1-2-1.8L6 9Z"/>',
-		'notebook'  => '<path d="M6 2h11a2 2 0 0 1 2 2v18H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Zm1 3v2h8V5H7Zm0 4v2h8V9H7Zm0 4v2h5v-2H7Z"/>',
-		'file'      => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 2.5L17.5 8H14V4.5ZM8 12h8v2H8v-2Zm0 4h8v2H8v-2Z"/>',
-		'printer'   => '<path d="M7 3h10v4H7V3Zm-2 6h14a2 2 0 0 1 2 2v5h-4v5H7v-5H3v-5a2 2 0 0 1 2-2Zm6 7v3h6v-3h-6Z"/>',
-		'gift'      => '<path d="M12 2a3 3 0 0 1 3 3c0 .6-.18 1.15-.47 1.6H21v3h-9v13h-2v-13H3v-3h6.47A3 3 0 0 1 12 2Zm0 2a1 1 0 0 0-1 1c0 .4.2.7.5.9H13c.3-.2.5-.5.5-.9a1 1 0 0 0-1-1Z"/>',
+		'notebook'  => '<rect x="5" y="3" width="15" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><path d="M3 6.5h4M3 10.5h4M3 14.5h4M3 18.5h4"/><line x1="12.5" y1="8" x2="17" y2="8"/><line x1="12.5" y1="12" x2="17" y2="12"/><line x1="12.5" y1="16" x2="15.5" y2="16"/>',
+		'file'      => '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6Z"/><path d="M14 3v5h5"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/>',
+		'printer'   => '<path d="M6 9V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v5"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/><line x1="9" y1="17.5" x2="15" y2="17.5"/>',
+		'gift'      => '<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><line x1="12" y1="8" x2="12" y2="21"/><path d="M12 8H8.5a2.5 2.5 0 1 1 0-5C11 3 12 8 12 8Z"/><path d="M12 8h3.5a2.5 2.5 0 1 0 0-5C13 3 12 8 12 8Z"/>',
 		'chat'      => '<path d="M12 3c5 0 9 3.4 9 7.6 0 4.2-4 7.6-9 7.6-.9 0-1.8-.1-2.6-.3L4 20l1.2-3.6C3.2 15 2 12.9 2 10.6 2 6.4 6 3 12 3Z"/>',
 		'instagram' => '<path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1Zm0 1.8c-3.1 0-3.5 0-4.7.07-1.1.05-1.7.24-2.1.4-.5.2-.9.44-1.3.83-.4.4-.63.77-.83 1.28-.16.4-.35.98-.4 2.08C2.6 10.4 2.6 10.8 2.6 12s0 1.6.07 2.8c.05 1.1.24 1.68.4 2.08.2.5.44.88.83 1.28.4.4.8.63 1.3.83.4.16.98.35 2.08.4 1.2.07 1.6.07 4.7.07s3.5 0 4.7-.07c1.1-.05 1.68-.24 2.08-.4.5-.2.88-.44 1.28-.83.4-.4.63-.8.83-1.28.16-.4.35-.98.4-2.08.07-1.2.07-1.6.07-2.8s0-1.6-.07-2.8c-.05-1.1-.24-1.68-.4-2.08a3.3 3.3 0 0 0-.83-1.28 3.4 3.4 0 0 0-1.28-.83c-.4-.16-.98-.35-2.08-.4-1.2-.07-1.6-.07-4.7-.07Zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Zm5.1-3.2a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"/>',
 		'arrow'     => '<path d="M13.2 5.6 21 12l-7.8 6.4-1.4-1.7 4.8-3.9H3v-1.6h13.6l-4.8-3.9Z"/>',
@@ -238,6 +238,13 @@ function libreriatres_icon( $name, $size = 22 ) {
 
 	if ( ! isset( $paths[ $name ] ) ) {
 		return '';
+	}
+
+	// Iconos de categoria en trazo lineal limpio segun el manual de marca y diseno.
+	$stroke_icons = array( 'notebook', 'file', 'printer', 'gift' );
+
+	if ( in_array( $name, $stroke_icons, true ) ) {
+		return '<svg class="icon icon--' . esc_attr( $name ) . '" width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' . $paths[ $name ] . '</svg>';
 	}
 
 	return '<svg class="icon icon--' . esc_attr( $name ) . '" width="' . (int) $size . '" height="' . (int) $size . '" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' . $paths[ $name ] . '</svg>';
@@ -285,6 +292,20 @@ function libreriatres_mobile_menu() {
 			<button type="button" class="mobile-menu__close" data-menu-close aria-label="<?php esc_attr_e( 'Cerrar menu', 'libreriatres' ); ?>">
 				<?php echo libreriatres_icon( 'close', 24 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			</button>
+
+			<form role="search" method="get" class="header-search mobile-menu__search" action="<?php echo esc_url( home_url( '/' ) ); ?>" data-live-search>
+				<label class="screen-reader-text" for="mobile-menu-search-field"><?php esc_html_e( 'Buscar productos', 'libreriatres' ); ?></label>
+				<?php echo libreriatres_icon( 'search', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<input type="search" id="mobile-menu-search-field" class="header-search__input" name="s" placeholder="<?php esc_attr_e( '¿Qué estás buscando?', 'libreriatres' ); ?>" autocomplete="off">
+				<button type="button" class="header-search__clear" aria-label="<?php esc_attr_e( 'Limpiar búsqueda', 'libreriatres' ); ?>" hidden>
+					<?php echo libreriatres_icon( 'close', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+				<span class="header-search__spinner" aria-hidden="true"></span>
+				<?php if ( function_exists( 'wc_get_page_id' ) ) : ?>
+					<input type="hidden" name="post_type" value="product">
+				<?php endif; ?>
+				<div class="header-search__results" role="listbox" aria-label="<?php esc_attr_e( 'Resultados de búsqueda', 'libreriatres' ); ?>" hidden></div>
+			</form>
 			<?php
 			if ( has_nav_menu( 'primary' ) ) {
 				wp_nav_menu(
@@ -292,7 +313,7 @@ function libreriatres_mobile_menu() {
 						'theme_location' => 'primary',
 						'container'      => false,
 						'menu_class'     => 'mobile-menu__list',
-						'depth'          => 2,
+						'depth'          => 0,
 					)
 				);
 			} else {
@@ -300,7 +321,7 @@ function libreriatres_mobile_menu() {
 					array(
 						'container'  => false,
 						'menu_class' => 'mobile-menu__list',
-						'depth'      => 2,
+						'depth'      => 0,
 					)
 				);
 			}
@@ -316,6 +337,251 @@ function libreriatres_mobile_menu() {
 	</div>
 	<?php
 }
+
+/* -------------------------------------------------------------------------
+ * Sincronización automática del menú de Productos con categorías WooCommerce
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Inyecta dinámicamente las categorías y subcategorías de WooCommerce en el menú "Productos".
+ *
+ * Mantiene la navegación sincronizada automáticamente con las categorías de la tienda:
+ * cualquier categoría o subcategoría creada, reordenada o anidada en WooCommerce
+ * (Productos > Categorías) se refleja inmediatamente en el menú sin tener que gestionarla
+ * a mano en Apariencia > Menús.
+ *
+ * @param array    $sorted_menu_items Elementos del menú ordenados.
+ * @param stdClass $args              Argumentos pasados a wp_nav_menu().
+ * @return array Elementos del menú con las categorías de WooCommerce inyectadas.
+ */
+function libreriatres_auto_product_categories_menu( $sorted_menu_items, $args ) {
+	if ( ! class_exists( 'WooCommerce' ) || ! taxonomy_exists( 'product_cat' ) ) {
+		return $sorted_menu_items;
+	}
+
+	// Buscamos el ítem "Productos" de primer nivel.
+	$shop_page_id = function_exists( 'wc_get_page_id' ) ? (int) wc_get_page_id( 'shop' ) : 0;
+	$shop_url     = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : home_url( '/productos/' );
+	$shop_path    = trim( (string) wp_parse_url( $shop_url, PHP_URL_PATH ), '/' );
+
+	$products_item = null;
+	foreach ( $sorted_menu_items as $item ) {
+		if ( (int) $item->menu_item_parent !== 0 ) {
+			continue;
+		}
+
+		$item_title   = trim( wp_strip_all_tags( $item->title ) );
+		$is_shop_name = ( 0 === strcasecmp( $item_title, 'Productos' ) || 0 === strcasecmp( $item_title, 'Tienda' ) || 0 === strcasecmp( $item_title, 'Catálogo' ) || 0 === strcasecmp( $item_title, 'Catalogo' ) );
+
+		$item_path    = trim( (string) wp_parse_url( $item->url, PHP_URL_PATH ), '/' );
+		$is_shop_url  = ( ( ! empty( $shop_path ) && $item_path === $shop_path ) || in_array( $item_path, array( 'productos', 'tienda', 'shop', 'catalogo' ), true ) );
+		$is_shop_page = ( $shop_page_id > 0 && (int) $item->object_id === $shop_page_id );
+
+		if ( $is_shop_name || $is_shop_url || $is_shop_page ) {
+			$products_item = $item;
+			break;
+		}
+	}
+
+	if ( ! $products_item ) {
+		return $sorted_menu_items;
+	}
+
+	// Identificamos cualquier descendiente estático previo de "Productos" para reemplazarlo.
+	$descendant_ids = array();
+	$queue          = array( (int) $products_item->ID );
+	while ( ! empty( $queue ) ) {
+		$current_parent = array_shift( $queue );
+		foreach ( $sorted_menu_items as $item ) {
+			if ( (int) $item->menu_item_parent === $current_parent ) {
+				$descendant_ids[ (int) $item->ID ] = true;
+				$queue[]                           = (int) $item->ID;
+			}
+		}
+	}
+
+	$cleaned_items = array();
+	foreach ( $sorted_menu_items as $item ) {
+		if ( ! isset( $descendant_ids[ (int) $item->ID ] ) ) {
+			$cleaned_items[] = $item;
+		}
+	}
+
+	// Consultamos todas las categorías de producto registradas.
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'hide_empty' => false,
+		)
+	);
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return $cleaned_items;
+	}
+
+	$default_cat_id = (int) get_option( 'default_product_cat', 0 );
+	$valid_terms    = array();
+	foreach ( $terms as $term ) {
+		$is_default = ( (int) $term->term_id === $default_cat_id || in_array( $term->slug, array( 'sin-categorizar', 'uncategorized' ), true ) );
+		if ( $is_default && 0 === (int) $term->count ) {
+			continue;
+		}
+		$valid_terms[ (int) $term->term_id ] = $term;
+	}
+
+	if ( empty( $valid_terms ) ) {
+		return $cleaned_items;
+	}
+
+	// Agrupamos por término padre.
+	$by_parent = array();
+	foreach ( $valid_terms as $term_id => $term ) {
+		$pid = (int) $term->parent;
+		if ( ! isset( $valid_terms[ $pid ] ) ) {
+			$pid = 0;
+		}
+		if ( ! isset( $by_parent[ $pid ] ) ) {
+			$by_parent[ $pid ] = array();
+		}
+		$by_parent[ $pid ][] = $term;
+	}
+
+	// Ordenamos cada grupo respetando el orden manual de WooCommerce y luego nombre alfabético.
+	foreach ( $by_parent as $pid => &$group ) {
+		usort(
+			$group,
+			function( $a, $b ) {
+				$order_a = (int) ( get_term_meta( $a->term_id, 'order', true ) ?: ( $a->menu_order ?? 0 ) );
+				$order_b = (int) ( get_term_meta( $b->term_id, 'order', true ) ?: ( $b->menu_order ?? 0 ) );
+				if ( $order_a !== $order_b ) {
+					return $order_a - $order_b;
+				}
+				return strcasecmp( $a->name, $b->name );
+			}
+		);
+	}
+	unset( $group );
+
+	// Aplanamos el árbol jerárquico.
+	$ordered_terms = array();
+	$flatten_tree  = function( $pid ) use ( &$flatten_tree, &$by_parent, &$ordered_terms ) {
+		if ( empty( $by_parent[ $pid ] ) ) {
+			return;
+		}
+		foreach ( $by_parent[ $pid ] as $term ) {
+			$ordered_terms[] = $term;
+			$flatten_tree( (int) $term->term_id );
+		}
+	};
+	$flatten_tree( 0 );
+
+	// Identificador base virtual para evitar colisión con IDs reales de posts.
+	$id_base         = 200000;
+	$current_term_id = is_tax( 'product_cat' ) ? (int) get_queried_object_id() : 0;
+
+	$current_ancestors = array();
+	if ( $current_term_id > 0 ) {
+		$ancestor_terms = get_ancestors( $current_term_id, 'product_cat', 'taxonomy' );
+		if ( is_array( $ancestor_terms ) ) {
+			foreach ( $ancestor_terms as $anc_id ) {
+				$current_ancestors[ (int) $anc_id ] = true;
+			}
+		}
+	}
+
+	$has_children_map = array();
+	foreach ( $valid_terms as $term ) {
+		$pid = (int) $term->parent;
+		if ( $pid > 0 && isset( $valid_terms[ $pid ] ) ) {
+			$has_children_map[ $pid ] = true;
+		}
+	}
+
+	$cat_menu_items = array();
+	foreach ( $ordered_terms as $term ) {
+		$term_link = get_term_link( $term );
+		if ( is_wp_error( $term_link ) ) {
+			continue;
+		}
+
+		$virtual_id     = $id_base + (int) $term->term_id;
+		$pid            = (int) $term->parent;
+		$parent_menu_id = ( $pid > 0 && isset( $valid_terms[ $pid ] ) )
+			? ( $id_base + $pid )
+			: (int) $products_item->ID;
+
+		$is_current   = ( $current_term_id === (int) $term->term_id );
+		$is_ancestor  = isset( $current_ancestors[ (int) $term->term_id ] );
+		$has_children = isset( $has_children_map[ (int) $term->term_id ] );
+
+		$classes = array(
+			'menu-item',
+			'menu-item-type-taxonomy',
+			'menu-item-object-product_cat',
+			'menu-item-' . $virtual_id,
+		);
+
+		if ( $has_children ) {
+			$classes[] = 'menu-item-has-children';
+		}
+		if ( $is_current ) {
+			$classes[] = 'current-menu-item';
+			$classes[] = 'current_page_item';
+		}
+		if ( $is_ancestor ) {
+			$classes[] = 'current-menu-ancestor';
+			$classes[] = 'current_page_ancestor';
+		}
+
+		$menu_item = (object) array(
+			'ID'                    => $virtual_id,
+			'db_id'                 => $virtual_id,
+			'menu_item_parent'      => $parent_menu_id,
+			'object_id'             => (int) $term->term_id,
+			'object'                => 'product_cat',
+			'type'                  => 'taxonomy',
+			'type_label'            => __( 'Categoría de producto', 'libreriatres' ),
+			'title'                 => $term->name,
+			'url'                   => $term_link,
+			'target'                => '',
+			'attr_title'            => '',
+			'description'           => '',
+			'classes'               => $classes,
+			'xfn'                   => '',
+			'current'               => $is_current,
+			'current_item_ancestor' => $is_ancestor,
+			'current_item_parent'   => false,
+		);
+
+		$cat_menu_items[] = $menu_item;
+	}
+
+	if ( ! empty( $cat_menu_items ) ) {
+		if ( ! in_array( 'menu-item-has-children', $products_item->classes, true ) ) {
+			$products_item->classes[] = 'menu-item-has-children';
+		}
+	}
+
+	$is_in_shop = ( ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) || ( function_exists( 'is_shop' ) && is_shop() ) || ( function_exists( 'is_product' ) && is_product() ) || ( function_exists( 'is_product_taxonomy' ) && is_product_taxonomy() ) );
+	if ( $is_in_shop ) {
+		if ( ! in_array( 'current-menu-ancestor', $products_item->classes, true ) ) {
+			$products_item->classes[] = 'current-menu-ancestor';
+		}
+	}
+
+	$final_items = array();
+	foreach ( $cleaned_items as $item ) {
+		$final_items[] = $item;
+		if ( (int) $item->ID === (int) $products_item->ID ) {
+			foreach ( $cat_menu_items as $cat_item ) {
+				$final_items[] = $cat_item;
+			}
+		}
+	}
+
+	return $final_items;
+}
+add_filter( 'wp_nav_menu_objects', 'libreriatres_auto_product_categories_menu', 10, 2 );
 
 /* -------------------------------------------------------------------------
  * WooCommerce
@@ -380,7 +646,7 @@ function libreriatres_header_cart_count() {
 	if ( function_exists( 'WC' ) && WC()->cart ) {
 		$count = WC()->cart->get_cart_contents_count();
 	}
-	return (int) $count;
+	return '<span class="cart-count" data-cart-count>' . (int) $count . '</span>';
 }
 
 /**
@@ -412,10 +678,13 @@ add_filter( 'woocommerce_show_page_title', '__return_true' );
  * Cambia el texto del boton "Anadir al carrito" a "Consultanos por WhatsApp" cuando
  * el producto es simple (segn el diseno, el CTA principal es WhatsApp).
  */
-function libreriatres_loop_add_to_cart_text( $text, $product ) {
+function libreriatres_loop_add_to_cart_text( $text, $product = null ) {
+	if ( $product && method_exists( $product, 'is_type' ) && $product->is_type( 'variable' ) ) {
+		return esc_html__( 'Elegir opciones', 'libreriatres' );
+	}
 	return esc_html__( 'Consultanos por WhatsApp', 'libreriatres' );
 }
-add_filter( 'woocommerce_product_add_to_cart_text', 'libreriatres_loop_add_to_cart_text' );
+add_filter( 'woocommerce_product_add_to_cart_text', 'libreriatres_loop_add_to_cart_text', 10, 2 );
 
 /**
  * Oculta el boton "Anadir al carrito" del loop: el CTA es WhatsApp.
@@ -459,6 +728,108 @@ add_action( 'wp_ajax_libreriatres_cart_items', 'libreriatres_ajax_cart_items' );
 add_action( 'wp_ajax_nopriv_libreriatres_cart_items', 'libreriatres_ajax_cart_items' );
 
 /**
+ * Buscador en vivo de productos (AJAX).
+ */
+function libreriatres_ajax_live_search() {
+	$term = isset( $_GET['term'] ) ? sanitize_text_field( wp_unslash( $_GET['term'] ) ) : '';
+
+	if ( mb_strlen( $term ) < 2 ) {
+		wp_send_json_success(
+			array(
+				'products'     => array(),
+				'total'        => 0,
+				'view_all_url' => '',
+			)
+		);
+	}
+
+	$args = array(
+		'post_type'      => 'product',
+		'post_status'    => 'publish',
+		'posts_per_page' => 6,
+		's'              => $term,
+		'orderby'        => 'relevance',
+	);
+
+	if ( class_exists( 'WooCommerce' ) ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => 'product_visibility',
+				'field'    => 'name',
+				'terms'    => array( 'exclude-from-search' ),
+				'operator' => 'NOT IN',
+			),
+		);
+	}
+
+	$query = new WP_Query( $args );
+	$items = array();
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$product_id = get_the_ID();
+			$product    = function_exists( 'wc_get_product' ) ? wc_get_product( $product_id ) : null;
+
+			// Imagen en miniatura
+			$thumb = '';
+			if ( has_post_thumbnail( $product_id ) ) {
+				$thumb = get_the_post_thumbnail_url( $product_id, 'thumbnail' );
+			}
+			if ( ! $thumb && function_exists( 'wc_placeholder_img_src' ) ) {
+				$thumb = wc_placeholder_img_src( 'thumbnail' );
+			}
+
+			// Precio
+			$price_html = '';
+			if ( $product ) {
+				$price_html = $product->get_price_html();
+			} else {
+				$price = get_post_meta( $product_id, '_price', true );
+				if ( '' !== $price ) {
+					$price_html = '$' . number_format( (float) $price, 0, ',', '.' );
+				}
+			}
+
+			// Categoria principal
+			$category = '';
+			$cats     = get_the_terms( $product_id, 'product_cat' );
+			if ( ! empty( $cats ) && ! is_wp_error( $cats ) ) {
+				$category = $cats[0]->name;
+			}
+
+			$items[] = array(
+				'id'         => $product_id,
+				'title'      => html_entity_decode( get_the_title(), ENT_QUOTES, 'UTF-8' ),
+				'url'        => get_permalink( $product_id ),
+				'thumb'      => $thumb,
+				'price_html' => $price_html,
+				'category'   => $category,
+			);
+		}
+		wp_reset_postdata();
+	}
+
+	$view_all_url = add_query_arg(
+		array(
+			's'         => $term,
+			'post_type' => 'product',
+		),
+		home_url( '/' )
+	);
+
+	wp_send_json_success(
+		array(
+			'products'     => $items,
+			'total'        => (int) $query->found_posts,
+			'view_all_url' => esc_url( $view_all_url ),
+		)
+	);
+}
+add_action( 'wp_ajax_libreriatres_live_search', 'libreriatres_ajax_live_search' );
+add_action( 'wp_ajax_nopriv_libreriatres_live_search', 'libreriatres_ajax_live_search' );
+
+/**
  * Excerpt mas corto.
  */
 function libreriatres_excerpt_length() {
@@ -495,14 +866,17 @@ function libreriatres_single_product_whatsapp() {
 		return;
 	}
 
+	$name  = $product->get_name();
+	$price = html_entity_decode( wp_strip_all_tags( $product->get_price_html() ), ENT_QUOTES, 'UTF-8' );
+
 	$msg = sprintf(
 		/* translators: 1: nombre del producto, 2: precio. */
 		__( '¡Hola! Consulto por el producto "%1$s" (%2$s). ¿Me contás disponibilidad?', 'libreriatres' ),
-		$product->get_name(),
-		html_entity_decode( wp_strip_all_tags( $product->get_price_html() ), ENT_QUOTES, 'UTF-8' )
+		$name,
+		$price
 	);
 	?>
-	<div class="single-product__wa">
+	<div class="single-product__wa" data-product-name="<?php echo esc_attr( $name ); ?>" data-product-price="<?php echo esc_attr( $price ); ?>">
 		<?php echo libreriatres_whatsapp_link( $msg ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 	</div>
 	<?php

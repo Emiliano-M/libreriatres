@@ -81,7 +81,7 @@ class Libreria_Tres_Core_Admin {
 			'libreriatres_instagram_token',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
+				'sanitize_callback' => array( __CLASS__, 'sanitize_instagram_token' ),
 				'default'           => '',
 			)
 		);
@@ -91,7 +91,7 @@ class Libreria_Tres_Core_Admin {
 			'libreriatres_instagram_rss',
 			array(
 				'type'              => 'string',
-				'sanitize_callback' => 'esc_url_raw',
+				'sanitize_callback' => array( __CLASS__, 'sanitize_feed_url' ),
 				'default'           => '',
 			)
 		);
@@ -112,6 +112,34 @@ class Libreria_Tres_Core_Admin {
 	 */
 	public static function sanitize_checkbox( $value ) {
 		return 'yes' === $value ? 'yes' : 'no';
+	}
+
+	/**
+	 * Sanitiza el token de Instagram y registra la fecha de carga para su renovacion automatica.
+	 *
+	 * @param mixed $value Valor enviado.
+	 */
+	public static function sanitize_instagram_token( $value ) {
+		$value = trim( sanitize_text_field( (string) $value ) );
+		$value = preg_replace( '/[\x{200B}-\x{200D}\x{FEFF}\s]+/u', '', $value );
+
+		if ( $value && $value !== get_option( 'libreriatres_instagram_token', '' ) ) {
+			update_option( 'libreriatres_instagram_token_refreshed', time(), false );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * URL de un feed. Limpia espacios y caracteres invisibles que se cuelan al pegar.
+	 *
+	 * @param mixed $value Valor enviado.
+	 */
+	public static function sanitize_feed_url( $value ) {
+		$value = trim( (string) $value );
+		$value = preg_replace( '/[\x{200B}-\x{200D}\x{FEFF}\s]+/u', '', $value );
+
+		return esc_url_raw( $value );
 	}
 
 	/**
@@ -192,18 +220,18 @@ class Libreria_Tres_Core_Admin {
 						<tr>
 							<th scope="row"><label for="libreriatres_instagram_rss"><?php esc_html_e( 'Feed RSS de Instagram', 'libreriatres-core' ); ?></label></th>
 							<td>
-								<input name="libreriatres_instagram_rss" id="libreriatres_instagram_rss" type="url" class="regular-text" placeholder="https://rsshub.app/..." value="<?php echo esc_attr( get_option( 'libreriatres_instagram_rss' ) ); ?>">
+								<input name="libreriatres_instagram_rss" id="libreriatres_instagram_rss" type="text" inputmode="url" class="regular-text" placeholder="https://rss.app/feeds/....xml" value="<?php echo esc_attr( get_option( 'libreriatres_instagram_rss' ) ); ?>">
 								<p class="description">
 									<?php esc_html_e( 'URL del feed con las publicaciones de Instagram. Una forma simple de obtenerla es crear una cuenta gratis en RSS.app, agregar la fuente de Instagram y copiar la URL del feed. Con esto la home muestra siempre las últimas publicaciones.', 'libreriatres-core' ); ?>
 								</p>
 							</td>
 						</tr>
 						<tr>
-							<th scope="row"><label for="libreriatres_instagram_token"><?php esc_html_e( 'Token de Instagram', 'libreriatres-core' ); ?></label></th>
+							<th scope="row"><label for="libreriatres_instagram_token"><?php esc_html_e( 'Token de Instagram (Recomendado)', 'libreriatres-core' ); ?></label></th>
 							<td>
-								<input name="libreriatres_instagram_token" id="libreriatres_instagram_token" type="text" class="regular-text" autocomplete="off" value="<?php echo esc_attr( get_option( 'libreriatres_instagram_token' ) ); ?>">
+								<input name="libreriatres_instagram_token" id="libreriatres_instagram_token" type="text" class="regular-text" placeholder="IGAA..." autocomplete="off" value="<?php echo esc_attr( get_option( 'libreriatres_instagram_token' ) ); ?>">
 								<p class="description">
-									<?php esc_html_e( 'Alternativa: access token de la Graph API de Instagram (scope instagram_basic). Se usa solo si no hay un feed RSS configurado.', 'libreriatres-core' ); ?>
+									<?php esc_html_e( 'Access Token oficial de la Graph API de Instagram (Meta for Developers). Se renueva automáticamente cada 15 días para no vencer nunca y soporta fotos, carruseles y Reels.', 'libreriatres-core' ); ?>
 									<?php
 									$libreriatres_error = Libreria_Tres_Core_Instagram::last_error();
 									if ( $libreriatres_error && ( Libreria_Tres_Core_Instagram::get_token() || Libreria_Tres_Core_Instagram::get_rss_url() ) ) {
@@ -221,15 +249,15 @@ class Libreria_Tres_Core_Admin {
 									);
 									?>
 								</p>
-								<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-									<input type="hidden" name="action" value="libreriatres_instagram_test">
-									<?php wp_nonce_field( 'libreriatres_instagram_test' ); ?>
-									<?php submit_button( __( 'Probar conexión y refrescar feed', 'libreriatres-core' ), 'secondary', 'submit', false ); ?>
-								</form>
 							</td>
 						</tr>
 					</table>
 					<?php submit_button(); ?>
+				</form>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:12px;">
+					<input type="hidden" name="action" value="libreriatres_instagram_test">
+					<?php wp_nonce_field( 'libreriatres_instagram_test' ); ?>
+					<?php submit_button( __( 'Probar conexión y refrescar feed', 'libreriatres-core' ), 'secondary', 'submit', false ); ?>
 				</form>
 			</div>
 

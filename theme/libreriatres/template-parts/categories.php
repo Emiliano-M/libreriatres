@@ -1,70 +1,63 @@
 <?php
 /**
- * Circulos de categorias.
+ * Círculos de categorías fijas de la home.
+ *
+ * Mantiene fijas las 4 categorías principales del diseño original:
+ *  1. Útiles escolares (cuaderno espiral)
+ *  2. Papelería (hoja/documento)
+ *  3. Impresiones (impresora)
+ *  4. Ofertas y combos (regalo)
  *
  * @package Libreria_Tres
  */
 
-// Excluimos la categoria por defecto de WooCommerce ("Sin categorizar").
-$libreriatres_exclude = array( (int) get_option( 'libreriatres_default_cat' ) );
-
-$libreriatres_uncat = get_term_by( 'slug', 'uncategorized', 'product_cat' );
-if ( $libreriatres_uncat ) {
-	$libreriatres_exclude[] = (int) $libreriatres_uncat->term_id;
-}
-
-// WooCommerce guarda el id de la categoria por defecto en esta opcion.
-$libreriatres_default = (int) get_option( 'default_product_cat' );
-if ( $libreriatres_default ) {
-	$libreriatres_exclude[] = $libreriatres_default;
-}
-
-$libreriatres_cats = get_terms(
+$libreriatres_fixed_cats = array(
 	array(
-		'taxonomy'   => 'product_cat',
-		'hide_empty' => false,
-		'parent'     => 0,
-		'exclude'    => array_filter( $libreriatres_exclude ),
-		'number'     => 4,
-		'orderby'    => 'menu_order',
-	)
+		'slug'  => 'utiles-escolares',
+		'name'  => __( 'Útiles escolares', 'libreriatres' ),
+		'icon'  => 'notebook',
+		'color' => 'cats-grid__item--c1',
+	),
+	array(
+		'slug'  => 'papeleria',
+		'name'  => __( 'Papelería', 'libreriatres' ),
+		'icon'  => 'file',
+		'color' => 'cats-grid__item--c2',
+	),
+	array(
+		'slug'  => 'impresiones',
+		'name'  => __( 'Impresiones', 'libreriatres' ),
+		'icon'  => 'printer',
+		'color' => 'cats-grid__item--c3',
+	),
+	array(
+		'slug'  => 'ofertas-y-combos',
+		'name'  => __( 'Ofertas y combos', 'libreriatres' ),
+		'icon'  => 'gift',
+		'color' => 'cats-grid__item--c4',
+	),
 );
-
-if ( is_wp_error( $libreriatres_cats ) || empty( $libreriatres_cats ) ) {
-	return;
-}
-
-// Ordenamos por el meta 'order' que define WooCommerce para las categorias.
-usort(
-	$libreriatres_cats,
-	function ( $a, $b ) {
-		$order_a = (int) get_term_meta( $a->term_id, 'order', true );
-		$order_b = (int) get_term_meta( $b->term_id, 'order', true );
-
-		if ( $order_a === $order_b ) {
-			return strcmp( $a->name, $b->name );
-		}
-
-		return $order_a <=> $order_b;
-	}
-);
-
-$libreriatres_icons = array( 'notebook', 'file', 'printer', 'gift' );
 ?>
 <section class="section section--categories">
 	<div class="container">
 		<ul class="cats-grid">
-			<?php foreach ( $libreriatres_cats as $index => $libreriatres_cat ) : ?>
+			<?php foreach ( $libreriatres_fixed_cats as $libreriatres_cat ) : ?>
 				<?php
-				$libreriatres_icon_name = $libreriatres_icons[ $index % count( $libreriatres_icons ) ];
-				$libreriatres_color    = 'cats-grid__item--c' . ( ( $index % 4 ) + 1 );
+				$libreriatres_term = get_term_by( 'slug', $libreriatres_cat['slug'], 'product_cat' );
+				if ( ! $libreriatres_term || is_wp_error( $libreriatres_term ) ) {
+					$libreriatres_term = get_term_by( 'name', $libreriatres_cat['name'], 'product_cat' );
+				}
+
+				$libreriatres_url = ( $libreriatres_term && ! is_wp_error( $libreriatres_term ) )
+					? get_term_link( $libreriatres_term )
+					: home_url( '/categoria-producto/' . $libreriatres_cat['slug'] . '/' );
 				?>
-				<li class="cats-grid__item <?php echo esc_attr( $libreriatres_color ); ?>">
-					<a class="cats-grid__link" href="<?php echo esc_url( get_term_link( $libreriatres_cat ) ); ?>">
+				<li class="cats-grid__item <?php echo esc_attr( $libreriatres_cat['color'] ); ?>">
+					<a class="cats-grid__link" href="<?php echo esc_url( $libreriatres_url ); ?>">
 						<span class="cats-grid__icon">
-							<?php echo libreriatres_icon( $libreriatres_icon_name, 34 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php echo libreriatres_icon( $libreriatres_cat['icon'], 44 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</span>
-						<span class="cats-grid__name"><?php echo esc_html( $libreriatres_cat->name ); ?></span>
+						<span class="cats-grid__name"><?php echo esc_html( $libreriatres_cat['name'] ); ?></span>
 					</a>
 				</li>
 			<?php endforeach; ?>

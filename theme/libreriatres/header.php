@@ -30,9 +30,9 @@
 			</span>
 			<span class="topbar__item topbar__item--hide-mobile">
 				<?php echo libreriatres_icon( 'truck', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<?php esc_html_e( 'Envíos / Delivery', 'libreriatres' ); ?>
+				<?php esc_html_e( 'Envíos', 'libreriatres' ); ?>
 			</span>
-			<span class="topbar__item topbar__item--hide-mobile">
+			<span class="topbar__item topbar__item--hide-mobile" style="display: none;">
 				<?php echo libreriatres_icon( 'clock', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php echo esc_html( libreriatres_hours() ); ?>
 			</span>
@@ -47,16 +47,25 @@
 
 			<?php echo libreriatres_logo( 'logo logo--header' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
-			<form role="search" method="get" class="header-search" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<form role="search" method="get" class="header-search" action="<?php echo esc_url( home_url( '/' ) ); ?>" data-live-search>
 				<label class="screen-reader-text" for="header-search-field"><?php esc_html_e( 'Buscar productos', 'libreriatres' ); ?></label>
 				<?php echo libreriatres_icon( 'search', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<input type="search" id="header-search-field" class="header-search__input" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" placeholder="<?php esc_attr_e( 'Buscar productos...', 'libreriatres' ); ?>">
+				<input type="search" id="header-search-field" class="header-search__input" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" placeholder="<?php esc_attr_e( '¿Qué estás buscando?', 'libreriatres' ); ?>" autocomplete="off">
+				<button type="button" class="header-search__clear" aria-label="<?php esc_attr_e( 'Limpiar búsqueda', 'libreriatres' ); ?>" hidden>
+					<?php echo libreriatres_icon( 'close', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+				<span class="header-search__spinner" aria-hidden="true"></span>
 				<?php if ( function_exists( 'wc_get_page_id' ) ) : ?>
 					<input type="hidden" name="post_type" value="product">
 				<?php endif; ?>
+				<div class="header-search__results" role="listbox" aria-label="<?php esc_attr_e( 'Resultados de búsqueda', 'libreriatres' ); ?>" hidden></div>
 			</form>
 
 			<div class="header-actions">
+				<button type="button" class="header-icon header-icon--search" data-search-toggle data-target="headerSearchMobile" aria-label="<?php esc_attr_e( 'Buscar productos', 'libreriatres' ); ?>" aria-controls="headerSearchMobile" aria-expanded="false">
+					<?php echo libreriatres_icon( 'search', 22 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				</button>
+
 				<?php echo libreriatres_whatsapp_icon_link(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 				<?php if ( function_exists( 'wc_get_page_id' ) && wc_get_page_id( 'myaccount' ) > 0 ) : ?>
@@ -74,6 +83,24 @@
 			</div>
 		</div>
 
+		<div class="header-search-mobile" id="headerSearchMobile" hidden>
+			<div class="container">
+				<form role="search" method="get" class="header-search header-search--mobile" action="<?php echo esc_url( home_url( '/' ) ); ?>" data-live-search>
+					<label class="screen-reader-text" for="mobile-header-search-field"><?php esc_html_e( 'Buscar productos', 'libreriatres' ); ?></label>
+					<?php echo libreriatres_icon( 'search', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<input type="search" id="mobile-header-search-field" class="header-search__input" name="s" placeholder="<?php esc_attr_e( '¿Qué estás buscando?', 'libreriatres' ); ?>" autocomplete="off">
+					<button type="button" class="header-search__clear" aria-label="<?php esc_attr_e( 'Limpiar búsqueda', 'libreriatres' ); ?>" hidden>
+						<?php echo libreriatres_icon( 'close', 14 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					</button>
+					<span class="header-search__spinner" aria-hidden="true"></span>
+					<?php if ( function_exists( 'wc_get_page_id' ) ) : ?>
+						<input type="hidden" name="post_type" value="product">
+					<?php endif; ?>
+					<div class="header-search__results" role="listbox" aria-label="<?php esc_attr_e( 'Resultados de búsqueda', 'libreriatres' ); ?>" hidden></div>
+				</form>
+			</div>
+		</div>
+
 		<nav class="main-nav" aria-label="<?php esc_attr_e( 'Menu principal', 'libreriatres' ); ?>">
 			<div class="container">
 				<?php
@@ -83,7 +110,7 @@
 							'theme_location' => 'primary',
 							'container'      => false,
 							'menu_class'     => 'main-nav__list',
-							'depth'          => 2,
+							'depth'          => 0,
 						)
 					);
 				} else {
@@ -91,7 +118,7 @@
 						array(
 							'container'  => false,
 							'menu_class' => 'main-nav__list',
-							'depth'      => 2,
+							'depth'      => 0,
 						)
 					);
 				}

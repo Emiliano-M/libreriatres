@@ -27,9 +27,19 @@ class Libreria_Tres_Core_Instagram {
 	const CACHE_KEY = 'libreriatres_instagram_feed';
 
 	/**
+	 * Opcion persistente de respaldo para que las publicaciones no desaparezcan si falla un refresco.
+	 */
+	const BACKUP_KEY = 'libreriatres_instagram_feed_backup';
+
+	/**
 	 * Cuanto se cachea el feed (6 horas).
 	 */
 	const TTL = 21600;
+
+	/**
+	 * Cada cuanto se renueva automaticamente el token de larga duracion (15 dias).
+	 */
+	const TOKEN_REFRESH_INTERVAL = 1296000;
 
 	/**
 	 * Hooks.
@@ -49,14 +59,20 @@ class Libreria_Tres_Core_Instagram {
 	}
 
 	/**
-	 * Devuelve el feed cacheado.
+	 * Devuelve el feed cacheado (o el ultimo respaldo valido si el transient expiro).
 	 *
 	 * @return array
 	 */
 	public static function get_feed() {
 		$feed = get_transient( self::CACHE_KEY );
 
-		return is_array( $feed ) ? $feed : array();
+		if ( is_array( $feed ) && ! empty( $feed ) ) {
+			return $feed;
+		}
+
+		$backup = get_option( self::BACKUP_KEY, array() );
+
+		return is_array( $backup ) ? $backup : array();
 	}
 
 	/**
@@ -75,36 +91,45 @@ class Libreria_Tres_Core_Instagram {
 
 	/**
 	 * Refresca el feed con la fuente disponible.
+	 * Prioriza el token oficial de Graph API; si no esta o falla, intenta con RSS.
 	 *
 	 * @return array|WP_Error
 	 */
 	public static function refresh() {
 		$posts = false;
 
-		if ( self::get_rss_url() ) {
-			$posts = self::refresh_rss();
+		if ( self::get_token() ) {
+			$posts = self::refresh_graph();
 		}
 
-		if ( false === $posts && self::get_token() ) {
-			$posts = self::refresh_graph();
+		if ( ( false === $posts || is_wp_error( $posts ) ) && self::get_rss_url() ) {
+			$rss_posts = self::refresh_rss();
+			if ( ! is_wp_error( $rss_posts ) || false === $posts ) {
+				$posts = $rss_posts;
+			}
 		}
 
 		if ( false === $posts ) {
 			delete_option( 'libreriatres_instagram_error' );
 			// Sin fuente configurada no queda un feed viejo dando vueltas.
 			delete_transient( self::CACHE_KEY );
+			delete_option( self::BACKUP_KEY );
 			delete_option( 'libreriatres_instagram_media' );
 
-			return new WP_Error( 'sin_fuente', __( 'Configurá un feed RSS o un token de Instagram.', 'libreriatres-core' ) );
+			return new WP_Error( 'sin_fuente', __( 'Configurá un token de Instagram o un feed RSS.', 'libreriatres-core' ) );
 		}
 
 		if ( is_wp_error( $posts ) ) {
 			update_option( 'libreriatres_instagram_error', $posts->get_error_message() );
 
-			// Si ya habia un feed cacheado, se conserva.
-			$old = get_transient( self::CACHE_KEY );
+			// Si ya habia un feed guardado (transient o backup), se conserva y re-hidrata.
+			$old = self::get_feed();
+			if ( ! empty( $old ) ) {
+				set_transient( self::CACHE_KEY, $old, self::TTL );
+				return $old;
+			}
 
-			return is_array( $old ) ? $old : $posts;
+			return $posts;
 		}
 
 		// Copiamos las imagenes al hosting: no hacemos hotlink a Instagram.
@@ -132,6 +157,7 @@ class Libreria_Tres_Core_Instagram {
 		}
 
 		update_option( 'libreriatres_instagram_media', $map );
+		update_option( self::BACKUP_KEY, $posts, false );
 		set_transient( self::CACHE_KEY, $posts, self::TTL );
 		delete_option( 'libreriatres_instagram_error' );
 
@@ -384,8 +410,11 @@ class Libreria_Tres_Core_Instagram {
 			return new WP_Error( 'sin_token', __( 'Falta el token de Instagram.', 'libreriatres-core' ) );
 		}
 
+		// Renueva automaticamente el token de larga duracion cada 15 dias para que no venza a los 60 dias.
+		$token = self::maybe_refresh_token( $token );
+
 		$version = trim( (string) get_option( 'libreriatres_instagram_version', 'v22.0' ) );
-		$fields  = 'id,caption,media_type,media_url,permalink,thumbnail_url';
+		$fields  = 'id,caption,media_type,media_url,permalink,thumbnail_url,timestamp';
 
 		$response = self::request( $version, $fields, $token );
 
@@ -398,18 +427,27 @@ class Libreria_Tres_Core_Instagram {
 			return $response;
 		}
 
+		$items = isset( $response['data'] ) && is_array( $response['data'] ) ? $response['data'] : array();
 		$posts = array();
 
-		foreach ( $response->data as $item ) {
-			// Solo imagenes: la seccion muestra fotos.
-			if ( isset( $item['media_type'] ) && 'IMAGE' !== $item['media_type'] ) {
-				continue;
-			}
+		foreach ( $items as $item ) {
+			$media_type = isset( $item['media_type'] ) ? strtoupper( (string) $item['media_type'] ) : 'IMAGE';
 
-			$image = ! empty( $item['media_url'] ) ? $item['media_url'] : ( $item['thumbnail_url'] ?? '' );
+			// En videos/Reels, media_url es el archivo MP4; usamos thumbnail_url (portada en imagen).
+			if ( 'VIDEO' === $media_type ) {
+				$image = ! empty( $item['thumbnail_url'] ) ? $item['thumbnail_url'] : '';
+			} else {
+				$image = ! empty( $item['media_url'] ) ? $item['media_url'] : ( $item['thumbnail_url'] ?? '' );
+			}
 
 			if ( ! $image || empty( $item['permalink'] ) ) {
 				continue;
+			}
+
+			$timestamp = 0;
+			if ( ! empty( $item['timestamp'] ) ) {
+				$parsed    = strtotime( (string) $item['timestamp'] );
+				$timestamp = $parsed ? (int) $parsed : 0;
 			}
 
 			$posts[] = array(
@@ -417,15 +455,64 @@ class Libreria_Tres_Core_Instagram {
 				'permalink' => esc_url_raw( $item['permalink'] ),
 				'image'     => esc_url_raw( $image ),
 				'caption'   => isset( $item['caption'] ) ? wp_trim_words( (string) $item['caption'], 12, '…' ) : '',
-				'date'      => isset( $item['timestamp'] ) ? (int) $item['timestamp'] : 0,
+				'date'      => $timestamp,
 			);
+
+			if ( count( $posts ) >= 4 ) {
+				break;
+			}
 		}
 
 		if ( empty( $posts ) ) {
-			return new WP_Error( 'instagram_vacio', __( 'Instagram no devolvio publicaciones.', 'libreriatres-core' ) );
+			return new WP_Error( 'instagram_vacio', __( 'Instagram no devolvió publicaciones.', 'libreriatres-core' ) );
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * Renueva automaticamente el token de larga duracion de Instagram (dura 60 dias)
+	 * si pasaron mas de 15 dias desde la ultima renovacion.
+	 *
+	 * @param string $token Token actual.
+	 * @return string Token vigente.
+	 */
+	public static function maybe_refresh_token( $token ) {
+		$last_refresh = (int) get_option( 'libreriatres_instagram_token_refreshed', 0 );
+
+		if ( 0 === $last_refresh ) {
+			update_option( 'libreriatres_instagram_token_refreshed', time(), false );
+			return $token;
+		}
+
+		if ( ( time() - $last_refresh ) < self::TOKEN_REFRESH_INTERVAL ) {
+			return $token;
+		}
+
+		$response = wp_remote_get(
+			add_query_arg(
+				array(
+					'grant_type'   => 'ig_refresh_token',
+					'access_token' => $token,
+				),
+				'https://graph.instagram.com/refresh_access_token'
+			),
+			array( 'timeout' => 15 )
+		);
+
+		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+			return $token;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+		if ( ! empty( $body['access_token'] ) && is_string( $body['access_token'] ) ) {
+			$token = trim( $body['access_token'] );
+			update_option( 'libreriatres_instagram_token', $token );
+			update_option( 'libreriatres_instagram_token_refreshed', time(), false );
+		}
+
+		return $token;
 	}
 
 	/**
@@ -443,11 +530,12 @@ class Libreria_Tres_Core_Instagram {
 			add_query_arg(
 				array(
 					'fields'       => $fields,
-					'limit'        => 4,
-					'access_token' => rawurlencode( $token ),
+					'limit'        => 12,
+					'access_token' => $token,
 				),
 				$url
-			)
+			),
+			array( 'timeout' => 20 )
 		);
 
 		if ( is_wp_error( $response ) ) {
@@ -458,7 +546,7 @@ class Libreria_Tres_Core_Instagram {
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( 200 !== $code || ! isset( $body['data'] ) ) {
-			$message = isset( $body['error']['message'] ) ? $body['error']['message'] : __( 'Instagram no respondio.', 'libreriatres-core' );
+			$message = isset( $body['error']['message'] ) ? $body['error']['message'] : __( 'Instagram no respondió.', 'libreriatres-core' );
 
 			return new WP_Error( 'instagram', $message );
 		}
@@ -476,6 +564,18 @@ class Libreria_Tres_Core_Instagram {
 	 * @return array|WP_Error
 	 */
 	public static function test() {
+		if ( self::get_token() ) {
+			$result = self::refresh_graph();
+
+			if ( ! is_wp_error( $result ) ) {
+				return array( 'data' => array( 'count' => count( $result ) ), 'source' => 'graph' );
+			}
+
+			if ( ! self::get_rss_url() ) {
+				return $result;
+			}
+		}
+
 		if ( self::get_rss_url() ) {
 			$result = self::refresh_rss();
 
@@ -486,17 +586,7 @@ class Libreria_Tres_Core_Instagram {
 			return array( 'data' => array( 'count' => count( $result ) ), 'source' => 'rss' );
 		}
 
-		if ( self::get_token() ) {
-			$response = self::request( trim( (string) get_option( 'libreriatres_instagram_version', 'v22.0' ) ), 'id,caption,media_type,media_url,permalink', self::get_token() );
-
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
-
-			return array( 'data' => array( 'count' => count( $response['data'] ) ), 'source' => 'graph' );
-		}
-
-		return new WP_Error( 'sin_fuente', __( 'Configurá un feed RSS o un token de Instagram.', 'libreriatres-core' ) );
+		return new WP_Error( 'sin_fuente', __( 'Configurá un token de Instagram o un feed RSS.', 'libreriatres-core' ) );
 	}
 
 	/**

@@ -62,24 +62,31 @@ $libreriatres_msg = sprintf(
 			echo libreriatres_whatsapp_link( $libreriatres_msg ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 
-			<?php
-			$libreriatres_in_cart = false;
-			if ( function_exists( 'WC' ) && WC()->cart ) {
-				$libreriatres_in_cart = WC()->cart->find_product_in_cart( $product->get_id() );
-			}
-			?>
-			<form class="product-card__cart<?php echo $libreriatres_in_cart ? ' is-hidden' : ''; ?>" method="post" enctype="multipart/form-data" action="<?php echo esc_url( $product->get_permalink() ); ?>" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
-				<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>">
-				<button type="submit" class="btn btn--cart">
-					<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'cart', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-					<span class="btn__label"><?php esc_html_e( 'Agregar al carrito', 'libreriatres' ); ?></span>
-				</button>
-			</form>
+			<?php if ( $product->is_type( 'variable' ) ) : ?>
+				<a class="btn btn--cart product-card__options" href="<?php echo esc_url( $libreriatres_link ); ?>">
+					<span class="btn__label"><?php esc_html_e( 'Elegir opciones', 'libreriatres' ); ?></span>
+					<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'arrow', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				</a>
+			<?php else : ?>
+				<?php
+				$libreriatres_in_cart = false;
+				if ( function_exists( 'WC' ) && WC()->cart ) {
+					$libreriatres_in_cart = WC()->cart->find_product_in_cart( $product->get_id() );
+				}
+				?>
+				<form class="product-card__cart<?php echo $libreriatres_in_cart ? ' is-hidden' : ''; ?>" method="post" enctype="multipart/form-data" action="<?php echo esc_url( $product->get_permalink() ); ?>" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
+					<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->get_id() ); ?>">
+					<button type="submit" class="btn btn--cart">
+						<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'cart', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+						<span class="btn__label"><?php esc_html_e( 'Agregar al carrito', 'libreriatres' ); ?></span>
+					</button>
+				</form>
 
-			<a class="btn btn--cart btn--cart--added product-card__in-cart<?php echo $libreriatres_in_cart ? '' : ' is-hidden'; ?>" href="<?php echo esc_url( wc_get_cart_url() ); ?>" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
-				<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-				<span class="btn__label"><?php esc_html_e( 'En el carrito', 'libreriatres' ); ?></span>
-			</a>
+				<a class="btn btn--cart btn--cart--added product-card__in-cart<?php echo $libreriatres_in_cart ? '' : ' is-hidden'; ?>" href="<?php echo esc_url( wc_get_cart_url() ); ?>" data-product-id="<?php echo esc_attr( $product->get_id() ); ?>">
+					<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'check', 18 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<span class="btn__label"><?php esc_html_e( 'En el carrito', 'libreriatres' ); ?></span>
+				</a>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
