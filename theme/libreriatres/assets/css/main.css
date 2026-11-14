@@ -2697,7 +2697,9 @@ textarea {
 	padding: 28px 32px;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
 	gap: 18px;
 	height: 100%;
 }
@@ -2711,17 +2713,21 @@ textarea {
 .contact-list {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	gap: 14px;
 	font-size: 15px;
 	color: var(--ink);
 	list-style: none;
 	padding-left: 0;
 	margin: 0;
+	width: 100%;
 }
 
 .contact-list li {
+	width: 100%;
 	padding-bottom: 12px;
 	border-bottom: 1px solid var(--line);
+	text-align: center;
 }
 
 .contact-list li:last-child {
@@ -2869,8 +2875,7 @@ textarea {
 	.header-search-mobile {
 		display: block;
 		background: #fff;
-		padding: 10px 0 14px;
-		border-top: 1px solid var(--line);
+		padding: 6px 0 14px;
 		box-shadow: 0 4px 12px rgba(64, 47, 55, 0.05);
 	}
 
@@ -2882,6 +2887,13 @@ textarea {
 		display: flex;
 		max-width: 100%;
 		margin: 0;
+	}
+
+	/* Evita el zoom automatico de iOS Safari al enfocar inputs con font-size < 16px. */
+	.header-search__input,
+	.contact-form input,
+	.contact-form textarea {
+		font-size: 16px;
 	}
 
 	.mobile-menu__search {
