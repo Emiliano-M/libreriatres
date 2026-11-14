@@ -280,14 +280,22 @@
 				var thumbHtml = p.thumb
 					? '<img src="' + escapeHtml(p.thumb) + '" alt="" loading="lazy">'
 					: '<span class="header-search__thumb-placeholder">✏️</span>';
+				var outOfStock = p.in_stock === false;
+				var metaHtml = '';
+				if (p.category) {
+					metaHtml += '<span class="header-search__category">' + escapeHtml(p.category) + '</span>';
+				}
+				if (outOfStock) {
+					metaHtml += '<span class="header-search__stock-badge">Sin stock</span>';
+				}
 
 				html +=
-					'<li class="header-search__item" role="option" id="search-opt-' + idx + '" data-index="' + idx + '">' +
+					'<li class="header-search__item' + (outOfStock ? ' header-search__item--out-of-stock' : '') + '" role="option" id="search-opt-' + idx + '" data-index="' + idx + '">' +
 					'<a class="header-search__link" href="' + escapeHtml(p.url) + '">' +
 					'<div class="header-search__thumb">' + thumbHtml + '</div>' +
 					'<div class="header-search__info">' +
 					'<span class="header-search__title">' + highlight(p.title, term) + '</span>' +
-					(p.category ? '<span class="header-search__category">' + escapeHtml(p.category) + '</span>' : '') +
+					(metaHtml ? '<div class="header-search__meta">' + metaHtml + '</div>' : '') +
 					'</div>' +
 					'<div class="header-search__price">' + (p.price_html || '') + '</div>' +
 					'</a>' +

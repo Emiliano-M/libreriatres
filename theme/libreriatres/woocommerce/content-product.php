@@ -11,18 +11,27 @@ if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
 
-$libreriatres_link  = $product->get_permalink();
-$libreriatres_name  = $product->get_name();
-$libreriatres_price = $product->get_price_html();
+$libreriatres_link     = $product->get_permalink();
+$libreriatres_name     = $product->get_name();
+$libreriatres_price    = $product->get_price_html();
+$libreriatres_in_stock = $product->is_in_stock();
 
-$libreriatres_msg = sprintf(
-	/* translators: %s: nombre del producto. */
-	__( '¡Hola! Consulto por el producto "%s" (%s). ¿Me contás disponibilidad y precio?', 'libreriatres' ),
-	$libreriatres_name,
-	html_entity_decode( wp_strip_all_tags( $libreriatres_price ), ENT_QUOTES, 'UTF-8' )
-);
+if ( $libreriatres_in_stock ) {
+	$libreriatres_msg = sprintf(
+		/* translators: %1$s: nombre del producto, %2$s: precio. */
+		__( '¡Hola! Consulto por el producto "%1$s" (%2$s). ¿Me contás disponibilidad y precio?', 'libreriatres' ),
+		$libreriatres_name,
+		html_entity_decode( wp_strip_all_tags( $libreriatres_price ), ENT_QUOTES, 'UTF-8' )
+	);
+} else {
+	$libreriatres_msg = sprintf(
+		/* translators: %s: nombre del producto. */
+		__( '¡Hola! Vi que el producto "%s" figura sin stock. ¿Sabés cuándo vuelve a ingresar?', 'libreriatres' ),
+		$libreriatres_name
+	);
+}
 ?>
-<div <?php wc_product_class( 'product-card', $product ); ?>>
+<div <?php wc_product_class( 'product-card' . ( $libreriatres_in_stock ? '' : ' product-card--out-of-stock' ), $product ); ?>>
 	<a class="product-card__media" href="<?php echo esc_url( $libreriatres_link ); ?>">
 		<?php
 		echo woocommerce_get_product_thumbnail(
@@ -37,7 +46,9 @@ $libreriatres_msg = sprintf(
 		<button type="button" class="product-card__wish" aria-label="<?php esc_attr_e( 'Agregar a favoritos', 'libreriatres' ); ?>" data-wish>
 			<?php echo libreriatres_icon( 'heart', 20 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</button>
-		<?php if ( $product->is_on_sale() ) : ?>
+		<?php if ( ! $libreriatres_in_stock ) : ?>
+			<span class="product-card__badge product-card__badge--out-of-stock"><?php esc_html_e( 'Sin stock', 'libreriatres' ); ?></span>
+		<?php elseif ( $product->is_on_sale() ) : ?>
 			<span class="product-card__badge"><?php esc_html_e( 'Oferta', 'libreriatres' ); ?></span>
 		<?php endif; ?>
 	</a>
@@ -62,7 +73,11 @@ $libreriatres_msg = sprintf(
 			echo libreriatres_whatsapp_link( $libreriatres_msg ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>
 
-			<?php if ( $product->is_type( 'variable' ) ) : ?>
+			<?php if ( ! $libreriatres_in_stock ) : ?>
+				<span class="btn btn--out-of-stock product-card__stock-btn" aria-disabled="true">
+					<span class="btn__label"><?php esc_html_e( 'Sin stock', 'libreriatres' ); ?></span>
+				</span>
+			<?php elseif ( $product->is_type( 'variable' ) ) : ?>
 				<a class="btn btn--cart product-card__options" href="<?php echo esc_url( $libreriatres_link ); ?>">
 					<span class="btn__label"><?php esc_html_e( 'Elegir opciones', 'libreriatres' ); ?></span>
 					<span class="btn__icon" aria-hidden="true"><?php echo libreriatres_icon( 'arrow', 16 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>

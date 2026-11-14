@@ -805,6 +805,7 @@ function libreriatres_ajax_live_search() {
 				'thumb'      => $thumb,
 				'price_html' => $price_html,
 				'category'   => $category,
+				'in_stock'   => $product ? $product->is_in_stock() : true,
 			);
 		}
 		wp_reset_postdata();
@@ -857,6 +858,21 @@ function libreriatres_shop_header() {
 add_action( 'woocommerce_before_shop_loop', 'libreriatres_shop_header', 5 );
 
 /**
+ * Unifica el texto de producto agotado como "Sin stock".
+ *
+ * @param string     $availability Texto original de WooCommerce.
+ * @param WC_Product $product      Producto consultado.
+ * @return string
+ */
+function libreriatres_stock_availability_text( $availability, $product ) {
+	if ( $product && ! $product->is_in_stock() ) {
+		return __( 'Sin stock', 'libreriatres' );
+	}
+	return $availability;
+}
+add_filter( 'woocommerce_get_availability_text', 'libreriatres_stock_availability_text', 10, 2 );
+
+/**
  * Boton de pedido por WhatsApp en la pagina de producto.
  */
 function libreriatres_single_product_whatsapp() {
@@ -869,12 +885,20 @@ function libreriatres_single_product_whatsapp() {
 	$name  = $product->get_name();
 	$price = html_entity_decode( wp_strip_all_tags( $product->get_price_html() ), ENT_QUOTES, 'UTF-8' );
 
-	$msg = sprintf(
-		/* translators: 1: nombre del producto, 2: precio. */
-		__( '¡Hola! Consulto por el producto "%1$s" (%2$s). ¿Me contás disponibilidad?', 'libreriatres' ),
-		$name,
-		$price
-	);
+	if ( $product->is_in_stock() ) {
+		$msg = sprintf(
+			/* translators: 1: nombre del producto, 2: precio. */
+			__( '¡Hola! Consulto por el producto "%1$s" (%2$s). ¿Me contás disponibilidad?', 'libreriatres' ),
+			$name,
+			$price
+		);
+	} else {
+		$msg = sprintf(
+			/* translators: %s: nombre del producto. */
+			__( '¡Hola! Vi que el producto "%s" figura sin stock. ¿Sabés cuándo vuelve a ingresar?', 'libreriatres' ),
+			$name
+		);
+	}
 	?>
 	<div class="single-product__wa" data-product-name="<?php echo esc_attr( $name ); ?>" data-product-price="<?php echo esc_attr( $price ); ?>">
 		<?php echo libreriatres_whatsapp_link( $msg ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

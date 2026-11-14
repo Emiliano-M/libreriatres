@@ -8,10 +8,11 @@
 get_header();
 
 /**
- * Las paginas de WooCommerce (carrito, checkout, mi cuenta) necesitan el
+ * Las paginas de WooCommerce (carrito, checkout, mi cuenta) y Contacto necesitan el
  * ancho completo: el limite de lectura las deja muy angostas.
  */
-$libreriatres_woo_page = function_exists( 'is_cart' ) && ( is_cart() || is_checkout() || is_account_page() );
+$libreriatres_woo_page  = function_exists( 'is_cart' ) && ( is_cart() || is_checkout() || is_account_page() );
+$libreriatres_wide_page = $libreriatres_woo_page || is_page( 'contacto' );
 ?>
 
 <div class="container page-wrap<?php echo $libreriatres_woo_page ? ' page-wrap--woo' : ''; ?>">
@@ -24,7 +25,7 @@ $libreriatres_woo_page = function_exists( 'is_cart' ) && ( is_cart() || is_check
 				<h1 class="page-title"><?php the_title(); ?></h1>
 			</header>
 
-			<div class="single__content entry-content<?php echo $libreriatres_woo_page ? ' single__content--wide' : ''; ?>">
+			<div class="single__content entry-content<?php echo $libreriatres_wide_page ? ' single__content--wide' : ''; ?>">
 				<?php
 				the_content();
 
