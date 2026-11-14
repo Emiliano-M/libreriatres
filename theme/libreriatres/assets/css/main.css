@@ -2683,22 +2683,50 @@ textarea {
 
 .contact-grid {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(340px, 520px);
+	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 48px;
-	align-items: start;
+	align-items: stretch;
 	margin-top: 24px;
+	width: 100%;
+}
+
+.contact-grid__info {
+	background: var(--pink-50);
+	border: 1px solid var(--line);
+	border-radius: var(--radius);
+	padding: 28px 32px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	gap: 18px;
+	height: 100%;
 }
 
 .contact-grid__info h3 {
-	margin-top: 0;
+	margin: 0;
+	font-size: 24px;
 }
 
+.entry-content .contact-list,
 .contact-list {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
-	font-size: 14.5px;
+	gap: 14px;
+	font-size: 15px;
 	color: var(--ink);
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+}
+
+.contact-list li {
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--line);
+}
+
+.contact-list li:last-child {
+	padding-bottom: 0;
+	border-bottom: 0;
 }
 
 .contact-list strong {
@@ -2709,11 +2737,12 @@ textarea {
 .contact-form {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 16px;
 	background: var(--pink-50);
 	border: 1px solid var(--line);
 	border-radius: var(--radius);
-	padding: 22px;
+	padding: 28px 32px;
+	height: 100%;
 }
 
 .contact-form label {
@@ -2748,6 +2777,7 @@ textarea {
 
 .contact-form .btn {
 	align-self: flex-start;
+	margin-top: auto;
 }
 
 /* --------------------------------------------------------- Utilidades */
@@ -2924,6 +2954,12 @@ textarea {
 	.contact-grid {
 		grid-template-columns: 1fr;
 		gap: 24px;
+	}
+
+	.contact-grid__info,
+	.contact-form {
+		padding: 22px;
+		height: auto;
 	}
 }
 
