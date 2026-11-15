@@ -22,7 +22,7 @@ $libreriatres_wide_page = $libreriatres_woo_page || is_page( 'contacto' );
 		?>
 		<article <?php post_class( 'single' ); ?>>
 			<header class="single__head">
-				<h1 class="page-title"><?php the_title(); ?></h1>
+				<h1 class="page-title"><?php echo is_page( 'contacto' ) ? esc_html__( 'Contactanos por estos medios', 'libreriatres' ) : esc_html( get_the_title() ); ?></h1>
 			</header>
 
 			<div class="single__content entry-content<?php echo $libreriatres_wide_page ? ' single__content--wide' : ''; ?>">

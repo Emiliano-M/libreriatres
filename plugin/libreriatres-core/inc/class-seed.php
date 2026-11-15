@@ -101,9 +101,7 @@ class Libreria_Tres_Core_Seed {
 			),
 			'contacto'           => array(
 				'title'   => 'Contacto',
-				'content' => '<!-- wp:paragraph --><p>Encontranos en el local o escribinos por WhatsApp. Te respondemos de lunes a sábado.</p><!-- /wp:paragraph -->
-
-<!-- wp:shortcode -->[libreriatres_contacto]<!-- /wp:shortcode -->',
+				'content' => '<!-- wp:shortcode -->[libreriatres_contacto]<!-- /wp:shortcode -->',
 			),
 			'sobre-nosotros'     => array(
 				'title'   => 'Sobre nosotros',

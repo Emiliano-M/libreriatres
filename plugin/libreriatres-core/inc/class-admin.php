@@ -48,6 +48,7 @@ class Libreria_Tres_Core_Admin {
 			'libreriatres_whatsapp',
 			'libreriatres_phone',
 			'libreriatres_address',
+			'libreriatres_maps_url',
 			'libreriatres_hours',
 			'libreriatres_instagram',
 		);
@@ -201,6 +202,13 @@ class Libreria_Tres_Core_Admin {
 							<td><input name="libreriatres_address" id="libreriatres_address" type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'libreriatres_address' ) ); ?>"></td>
 						</tr>
 						<tr>
+							<th scope="row"><label for="libreriatres_maps_url"><?php esc_html_e( 'Ubicación para Google Maps', 'libreriatres-core' ); ?></label></th>
+							<td>
+								<input name="libreriatres_maps_url" id="libreriatres_maps_url" type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'libreriatres_maps_url' ) ); ?>" placeholder="<?php esc_attr_e( 'Ej: Calle 1234, 9 de Abril o URL de embed de Google Maps', 'libreriatres-core' ); ?>">
+								<p class="description"><?php esc_html_e( 'Opcional. Si queda vacío, el mapa usa la Dirección.', 'libreriatres-core' ); ?></p>
+							</td>
+						</tr>
+						<tr>
 							<th scope="row"><label for="libreriatres_hours"><?php esc_html_e( 'Horarios', 'libreriatres-core' ); ?></label></th>
 							<td><input name="libreriatres_hours" id="libreriatres_hours" type="text" class="regular-text" value="<?php echo esc_attr( get_option( 'libreriatres_hours' ) ); ?>"></td>
 						</tr>
@@ -335,11 +343,22 @@ class Libreria_Tres_Core_Admin {
 	 * Shortcode de contacto: datos + formulario que deriva a WhatsApp.
 	 */
 	public static function contacto_shortcode() {
-		$whatsapp = preg_replace( '/\D+/', '', (string) get_option( 'libreriatres_whatsapp', '5491178195270' ) );
-		$phone    = (string) get_option( 'libreriatres_phone', '11 7819 5270' );
-		$address  = (string) get_option( 'libreriatres_address', '9 de Abril, Esteban Echeverría' );
-		$hours    = (string) get_option( 'libreriatres_hours', 'Lunes a Sábados 14 a 22 hs' );
-		$insta    = (string) get_option( 'libreriatres_instagram', 'libreria.tres' );
+		$whatsapp  = preg_replace( '/\D+/', '', (string) get_option( 'libreriatres_whatsapp', '5491178195270' ) );
+		$phone     = (string) get_option( 'libreriatres_phone', '11 7819 5270' );
+		$address   = (string) get_option( 'libreriatres_address', '9 de Abril, Esteban Echeverría' );
+		$maps_opt  = trim( (string) get_option( 'libreriatres_maps_url', '' ) );
+		$hours     = (string) get_option( 'libreriatres_hours', 'Lunes a Sábados 14 a 22 hs' );
+		$insta     = (string) get_option( 'libreriatres_instagram', 'libreria.tres' );
+		$fallback_q = trim( $address ) !== '' ? $address . ', Buenos Aires, Argentina' : '9 de Abril, Esteban Echeverría, Buenos Aires, Argentina';
+
+		if ( '' !== $maps_opt && 0 === strpos( $maps_opt, 'http' ) && ( false !== strpos( $maps_opt, 'embed' ) || false !== strpos( $maps_opt, 'output=embed' ) ) ) {
+			$map_embed_url = $maps_opt;
+			$map_link_url  = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $fallback_q );
+		} else {
+			$map_query     = '' !== $maps_opt ? $maps_opt : $fallback_q;
+			$map_embed_url = 'https://maps.google.com/maps?q=' . rawurlencode( $map_query ) . '&z=15&ie=UTF8&iwloc=&output=embed';
+			$map_link_url  = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $map_query );
+		}
 
 		ob_start();
 		?>
@@ -361,13 +380,36 @@ class Libreria_Tres_Core_Admin {
 				</label>
 				<label>
 					<span><?php esc_html_e( 'Tu mensaje', 'libreriatres-core' ); ?></span>
-					<textarea name="mensaje" rows="4" required></textarea>
+					<textarea name="mensaje" rows="5" required></textarea>
 				</label>
 				<button type="submit" class="btn btn--whatsapp">
 					<?php esc_html_e( 'Enviar por WhatsApp', 'libreriatres-core' ); ?>
 				</button>
 			</form>
 		</div>
+
+		<section class="contact-map-card" aria-label="<?php esc_attr_e( 'Ubicación del local', 'libreriatres-core' ); ?>">
+			<div class="contact-map-card__head">
+				<div>
+					<h3 class="contact-map-card__title">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+						<span><?php esc_html_e( 'Dónde encontrarnos', 'libreriatres-core' ); ?></span>
+					</h3>
+					<p class="contact-map-card__address"><?php echo esc_html( $address ); ?></p>
+				</div>
+				<a class="contact-map-card__link" href="<?php echo esc_url( $map_link_url ); ?>" target="_blank" rel="noopener">
+					<?php esc_html_e( 'Abrir en Google Maps', 'libreriatres-core' ); ?> &rarr;
+				</a>
+			</div>
+			<div class="contact-map-card__frame">
+				<iframe
+					title="<?php esc_attr_e( 'Mapa de ubicación de Librería Tres', 'libreriatres-core' ); ?>"
+					src="<?php echo esc_url( $map_embed_url ); ?>"
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+					allowfullscreen></iframe>
+			</div>
+		</section>
 		<script>
 		document.addEventListener('submit', function (e) {
 			var form = e.target;

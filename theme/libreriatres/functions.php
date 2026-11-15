@@ -1026,6 +1026,17 @@ function libreriatres_body_class( $classes ) {
 add_filter( 'body_class', 'libreriatres_body_class' );
 
 /**
+ * Quita el párrafo introductorio heredado en la página Contacto.
+ */
+function libreriatres_clean_contacto_intro( $content ) {
+	if ( is_page( 'contacto' ) && is_string( $content ) ) {
+		$content = preg_replace( '#<p[^>]*>\s*Encontranos en el local.*?</p>#is', '', $content );
+	}
+	return $content;
+}
+add_filter( 'the_content', 'libreriatres_clean_contacto_intro', 5 );
+
+/**
  * Sitemap / robots: nada extra.
  */
 function libreriatres_excerpt_more() {
